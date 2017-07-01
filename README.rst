@@ -1,6 +1,6 @@
-===============
-HiCsuntdracones
-===============
+===========================================================
+HiC sunt dracones - Your little helper for the HiC analysis
+===========================================================
 
 
 .. image:: https://img.shields.io/pypi/v/hicsuntdracones.svg
@@ -17,24 +17,13 @@ HiCsuntdracones
      :target: https://pyup.io/repos/github/konrad/hicsuntdracones/
      :alt: Updates
 
+```
+usage: hicsd [-h] {version} ...
 
-A HiC matrix tool
+positional arguments:
+  {version}   commands
+    version   Show version
 
-
-* Free software: ISC license
-* Documentation: https://hicsuntdracones.readthedocs.io.
-
-
-Features
---------
-
-* TODO
-
-Credits
----------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-
+optional arguments:
+  -h, --help  show this help message and exit
+```
