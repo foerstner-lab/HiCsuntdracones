@@ -19,6 +19,7 @@ HiC sunt dracones - Your little helper for the HiC analysis
 
 
 ::
+    
     usage: hicsd [-h] {version} ...
     
     positional arguments:
