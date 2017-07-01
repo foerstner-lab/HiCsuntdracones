@@ -18,6 +18,8 @@ HiC sunt dracones - Your little helper for the HiC analysis
      :alt: Updates
 
 
+Usage
+
 ::
     
     usage: hicsd [-h] {version} ...
