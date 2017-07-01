@@ -18,13 +18,13 @@ HiC sunt dracones - Your little helper for the HiC analysis
      :alt: Updates
 
 
-```
-usage: hicsd [-h] {version} ...
+::
+    usage: hicsd [-h] {version} ...
+    
+    positional arguments:
+      {version}   commands
+        version   Show version
+    
+    optional arguments:
+      -h, --help  show this help message and exit
 
-positional arguments:
-  {version}   commands
-    version   Show version
-
-optional arguments:
-  -h, --help  show this help message and exit
-```
