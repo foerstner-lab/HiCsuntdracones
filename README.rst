@@ -34,3 +34,8 @@ Usage
     optional arguments:
       -h, --help  show this help message and exit
 
+------
+Trivia
+------
+
+- `Origin of the name <https://en.wikipedia.org/wiki/Here_be_dragons>`__
