@@ -17,6 +17,7 @@ HiC sunt dracones - Your little helper for the HiC analysis
      :target: https://pyup.io/repos/github/konrad/hicsuntdracones/
      :alt: Updates
 
+
 ```
 usage: hicsd [-h] {version} ...
 
