@@ -3,7 +3,7 @@
 """HiC sunt dracones - Your little helper for the HiC analysis"""
 
 import argparse
-
+import hicsuntdracones.submatrix
 
 __author__ = "Konrad Foerstner <konrad@foerstner.org>"
 __copyright__ = "2017 by Konrad Foerstner <konrad@foerstner.org>"
@@ -24,9 +24,18 @@ def main():
         "shape", help="Return the shape of the matrix")
     shape_parser.set_defaults(func=shape)
 
+    submatrix_parser = subparsers.add_parser(
+        "submatrix", help="Extract submatrices")
+    submatrix_parser.set_defaults(func=submatrix)
+    submatrix_parser.add_argument(
+        "--matrix", "-m", dest="matrix_file", required=True)
+    submatrix_parser.add_argument("--output_prefix", "-o", required=True)
+    submatrix_parser.add_argument("--chromosome", "-c")
+    submatrix_parser.add_argument("--delimiter", "-d", default="-")
+    
     args = parser.parse_args()
     if "func" in dir(args):
-        args.func()
+        args.func(args)
     else:
         parser.print_help()
 
@@ -35,5 +44,9 @@ def show_version():
 
 def shape():
     pass
+
+def submatrix(args):
+    hicsuntdracones.submatrix.extract(
+        args.matrix_file, args.output_prefix, args.chromosome, args.delimiter)
 
 main()
