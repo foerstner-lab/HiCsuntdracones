@@ -20,6 +20,11 @@ def main():
         "version", help="Show version")
     show_version_parser.set_defaults(func=show_version)
 
+
+    show_version_parser = subparsers.add_parser(
+        "shape", help="")
+    show_version_parser.set_defaults(func=shape)
+
     args = parser.parse_args()
     if "func" in dir(args):
         args.func()
@@ -28,5 +33,8 @@ def main():
 
 def show_version():
     print(__version__)
+
+def shape():
+    pass
 
 main()
