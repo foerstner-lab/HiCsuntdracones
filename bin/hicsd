@@ -54,9 +54,9 @@ def main():
     dist_dep_decay_parser.set_defaults(func=dist_dep_decay)
     # output plot and/or text file
 
-    interaction_calc_parser = subparsers.add_parser(
-         "interaction_calc", help="Calculate interactions")
-    interaction_calc_parser.set_defaults(func=interaction_calc)
+    colocalisation_parser = subparsers.add_parser(
+         "colocalisation", help="Perform colocalisation analysis")
+    colocalisation_parser.set_defaults(func=colocalisation)
     
     args = parser.parse_args()
     if "func" in dir(args):
@@ -104,7 +104,7 @@ def virtual_4C(args):
 def dist_dep_decay(args):
     pass
 
-def interaction_calc(args):
+def colocalisation(args):
     pass
 
 main()
