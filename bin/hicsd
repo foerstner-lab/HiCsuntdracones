@@ -57,6 +57,10 @@ def main():
     colocalisation_parser = subparsers.add_parser(
          "colocalisation", help="Perform colocalisation analysis")
     colocalisation_parser.set_defaults(func=colocalisation)
+
+    diff_colocalisation_parser = subparsers.add_parser(
+         "diff_colocalisation", help="Perform differential colocalisation analysis")
+    diff_colocalisation_parser.set_defaults(func=diff_colocalisation)
     
     args = parser.parse_args()
     if "func" in dir(args):
@@ -105,6 +109,9 @@ def dist_dep_decay(args):
     pass
 
 def colocalisation(args):
+    pass
+
+def diff_colocalisation(args):
     pass
 
 main()
