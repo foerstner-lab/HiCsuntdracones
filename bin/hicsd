@@ -13,13 +13,16 @@ __version__ = "0.1.0"
 
 
 def main():
+    """
+    The entry point.
+    """
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(help="commands")
 
     show_version_parser = subparsers.add_parser(
         "version", help="Show version")
     show_version_parser.set_defaults(func=show_version)
-    
+
     shape_parser = subparsers.add_parser(
         "shape", help="Return the shape of the matrix")
     shape_parser.set_defaults(func=shape)
@@ -32,6 +35,28 @@ def main():
     submatrix_parser.add_argument("--output_prefix", "-o", required=True)
     submatrix_parser.add_argument("--chromosome", "-c")
     submatrix_parser.add_argument("--delimiter", "-d", default="-")
+
+    matrix_heatmap_parser = subparsers.add_parser(
+        "matrix_heatmap", help="Plot interaction matix heatmap")
+    matrix_heatmap_parser.set_defaults(func=matrix_heatmap)
+
+    diff_matrix_heatmap_parser = subparsers.add_parser(
+        "diff_matrix_heatmap",
+        help="Plot differential interaction matix heatmap")
+    diff_matrix_heatmap_parser.set_defaults(func=diff_matrix_heatmap)
+
+    virtual_4C_parser = subparsers.add_parser(
+        "virtual_4C", help="Perform virtual 4C analysis")
+    virtual_4C_parser.set_defaults(func=virtual_4C)
+
+    dist_dep_decay_parser = subparsers.add_parser(
+        "dist_dep_decay", help="Distant dependent decay")
+    dist_dep_decay_parser.set_defaults(func=dist_dep_decay)
+    # output plot and/or text file
+
+    interaction_calc_parser = subparsers.add_parser(
+         "interaction_calc", help="Calculate interactions")
+    interaction_calc_parser.set_defaults(func=interaction_calc)
     
     args = parser.parse_args()
     if "func" in dir(args):
@@ -40,13 +65,46 @@ def main():
         parser.print_help()
 
 def show_version():
+    """
+    Version
+    """
     print(__version__)
 
 def shape():
+    """
+    Print the shape of the matrix
+    """
     pass
 
 def submatrix(args):
+    """
+    Extract a submatrix
+    """
     hicsuntdracones.submatrix.extract(
         args.matrix_file, args.output_prefix, args.chromosome, args.delimiter)
+
+def matrix_heatmap(args):
+    """
+    Plot matrix heatmap
+    """
+    pass
+
+def diff_matrix_heatmap(args):
+    """
+    Plot differential matrix heatmap
+    """
+    pass
+
+def virtual_4C(args):
+    """
+    Perform vitural 4C analysis
+    """
+    pass
+
+def dist_dep_decay(args):
+    pass
+
+def interaction_calc(args):
+    pass
 
 main()
