@@ -47,9 +47,10 @@ def main():
         "diff_matrix", help="Generate differential matrix by dividing the "
         "values of one matrix by the values of the other.")
     diff_matrix_parser.set_defaults(func=diff_matrix)
-    diff_matrix_parser.add_argument("--numerator_matrix", "-n")
-    diff_matrix_parser.add_argument("--denominator_matrix", "-d")
-    diff_matrix_parser.add_argument("--output_matrix", "-o")
+    diff_matrix_parser.add_argument("--numerator_matrix", "-n", required=True)
+    diff_matrix_parser.add_argument("--denominator_matrix", "-d",
+                                    required=True)
+    diff_matrix_parser.add_argument("--output_matrix", "-o", required=True)
 
     matrix_heatmap_parser = subparsers.add_parser(
         "matrix_heatmap", help="Plot interaction matix heatmap")
