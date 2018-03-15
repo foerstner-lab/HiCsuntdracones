@@ -36,14 +36,17 @@ def main():
     submatrix_parser.add_argument("--chromosome", "-c")
     submatrix_parser.add_argument("--delimiter", "-d", default="-")
 
+    diff_matrix_parser = subparsers.add_parser(
+        "diff_matrix", help="Generate differential matrix by dividing the "
+        "values of one matrix by the values of the other.")
+    diff_matrix_parser.set_defaults(func=diff_matrix)
+    diff_matrix_parser.add_argument("--numerator_matrix", "-n")
+    diff_matrix_parser.add_argument("--denominator_matrix", "-d")
+    diff_matrix_parser.add_argument("--output_matrix", "-o")
+
     matrix_heatmap_parser = subparsers.add_parser(
         "matrix_heatmap", help="Plot interaction matix heatmap")
     matrix_heatmap_parser.set_defaults(func=matrix_heatmap)
-
-    diff_matrix_heatmap_parser = subparsers.add_parser(
-        "diff_matrix_heatmap",
-        help="Plot differential interaction matix heatmap")
-    diff_matrix_heatmap_parser.set_defaults(func=diff_matrix_heatmap)
 
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
@@ -58,10 +61,6 @@ def main():
          "colocalisation", help="Perform colocalisation analysis")
     colocalisation_parser.set_defaults(func=colocalisation)
 
-    diff_colocalisation_parser = subparsers.add_parser(
-         "diff_colocalisation", help="Perform differential colocalisation analysis")
-    diff_colocalisation_parser.set_defaults(func=diff_colocalisation)
-    
     args = parser.parse_args()
     if "func" in dir(args):
         args.func(args)
@@ -93,11 +92,11 @@ def matrix_heatmap(args):
     """
     pass
 
-def diff_matrix_heatmap(args):
+def diff_matrix(args):
     """
-    Plot differential matrix heatmap
+    Generate differential matrix by dividing the values of one matrix
+    by the values of the other.
     """
-    pass
 
 def virtual_4C(args):
     """
@@ -109,9 +108,6 @@ def dist_dep_decay(args):
     pass
 
 def colocalisation(args):
-    pass
-
-def diff_colocalisation(args):
     pass
 
 main()
