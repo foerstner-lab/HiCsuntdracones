@@ -111,6 +111,7 @@ def diff_matrix(args):
     Generate differential matrix by dividing the values of one matrix
     by the values of the other.
     """
+    pass
 
 def virtual_4C(args):
     """
