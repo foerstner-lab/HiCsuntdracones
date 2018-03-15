@@ -23,6 +23,13 @@ def main():
         "version", help="Show version")
     show_version_parser.set_defaults(func=show_version)
 
+    hicpro2homer_parser = subparsers.add_parser(
+        "hicpro2homer", help="Convert a matrix in HiC-Pro format to "
+        "Homer format")
+    hicpro2homer_parser.set_defaults(func=hicpro2homer)
+    hicpro2homer_parser.add_argument("--input_matrix", "-i", required=True)
+    hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True)
+
     shape_parser = subparsers.add_parser(
         "shape", help="Return the shape of the matrix")
     shape_parser.set_defaults(func=shape)
@@ -76,6 +83,12 @@ def show_version():
 def shape():
     """
     Print the shape of the matrix
+    """
+    pass
+
+def hicpro2homer(args):
+    """
+    Convert a matrix in HiC-Pro format to "Homer format.
     """
     pass
 
