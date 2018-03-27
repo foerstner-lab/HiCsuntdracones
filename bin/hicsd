@@ -3,6 +3,7 @@
 """HiC sunt dracones - Your little helper for the HiC analysis"""
 
 import argparse
+import hicsuntdracones.hicpro2homer
 import hicsuntdracones.submatrix
 
 __author__ = "Konrad Foerstner <konrad@foerstner.org>"
@@ -27,7 +28,8 @@ def main():
         "hicpro2homer", help="Convert a matrix in HiC-Pro format to "
         "Homer format")
     hicpro2homer_parser.set_defaults(func=hicpro2homer)
-    hicpro2homer_parser.add_argument("--input_matrix", "-i", required=True)
+    hicpro2homer_parser.add_argument("--input_bed", "-b", required=True)
+    hicpro2homer_parser.add_argument("--input_matrix", "-m", required=True)
     hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True)
 
     shape_parser = subparsers.add_parser(
@@ -91,7 +93,9 @@ def hicpro2homer(args):
     """
     Convert a matrix in HiC-Pro format to "Homer format.
     """
-    pass
+    hicsuntdracones.hicpro2homer.hicpro2homer(
+        args.input_bed, args.input_matrix, args.output_matrix)
+
 
 def submatrix(args):
     """
