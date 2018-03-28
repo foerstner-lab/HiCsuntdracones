@@ -12,9 +12,8 @@ class HiCMatrix():
         self._check_file()
         self.hic_matrix_df = pd.read_table(self._hic_matrix_file)
         self._check_hic_matrix_df()
-        self.hic_matrix_df["Regions"] = self.hic_matrix_df[
-            "Regions"].apply(remove_position_information)
         self.number_of_bins = self.hic_matrix_df.shape[0]
+        self.chromosomes = self._chromosomes()
         
     def _check_file(self):
         # TODO
@@ -31,8 +30,9 @@ class HiCMatrix():
     def to_csv():
         pass
 
-    def _chromosomes():
-        pass
+    def _chromosomes(self):
+        return sorted(self.hic_matrix_df[
+            "Regions"].apply(remove_position_information).unique())
 
 
 def remove_position_information(name_with_pos_info):

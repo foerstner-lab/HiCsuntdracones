@@ -7,3 +7,4 @@ def test_matrix_generation():
     assert type(hic_matrix) == hicsuntdracones.hicmatrix.HiCMatrix
     assert hic_matrix.hic_matrix_df.shape == (12, 14)
     assert hic_matrix.number_of_bins == 12
+    assert hic_matrix.chromosomes == ["chr1", "chr2"]

@@ -38,6 +38,11 @@ def main():
     number_of_bins_parser.set_defaults(func=number_of_bins)
     number_of_bins_parser.add_argument("--input_matrix", "-m", required=True)
 
+    chromosomes_parser = subparsers.add_parser(
+        "chromosomes", help="Return the chromosomes used in the matrix")
+    chromosomes_parser.set_defaults(func=chromosomes)
+    chromosomes_parser.add_argument("--input_matrix", "-m", required=True)    
+
     submatrix_parser = subparsers.add_parser(
         "submatrix", help="Extract submatrices")
     submatrix_parser.set_defaults(func=submatrix)
@@ -92,6 +97,10 @@ def number_of_bins(args):
     hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(args.input_matrix)
     print(hic_matrix.number_of_bins)
 
+def chromosomes(args):
+    hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(args.input_matrix)
+    print("\n".join(hic_matrix.chromosomes))
+    
 def hicpro2homer(args):
     """
     Convert a matrix in HiC-Pro format to "Homer format.
