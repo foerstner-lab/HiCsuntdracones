@@ -19,7 +19,13 @@ HiC sunt dracones - Your little helper for the HiC analysis
 
 .. image:: https://upload.wikimedia.org/wikipedia/commons/2/27/1601_De_Bry_and_de_Veer_Map_of_Nova_Zembla_and_the_Northeast_Passage_-_Geographicus_-_NovaZembla-debry-1601.jpg
    :height: 75px
-	   
+
+-------------------------------------
+Why should you use HiC sunt dracones?
+-------------------------------------
+
+
+	    
 -----
 Usage
 -----
