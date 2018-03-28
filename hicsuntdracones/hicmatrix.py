@@ -4,7 +4,7 @@ import pandas as pd
 
 class HiCMatrix():
 
-    def __init__(self, hic_matrix_file):
+    def __init__(self, hic_matrix_file: str):
         self._hic_matrix_file = hic_matrix_file
         self._read_matrix()
 
