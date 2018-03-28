@@ -34,9 +34,6 @@ class HiCMatrix():
     def _chromosomes():
         pass
 
-    def bins():
-        pass
-
 
 def remove_position_information(name_with_pos_info):
     # Return just the chromosome part without the exact window
