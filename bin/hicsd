@@ -43,6 +43,15 @@ def main():
     chromosomes_parser.set_defaults(func=chromosomes)
     chromosomes_parser.add_argument("--input_matrix", "-m", required=True)    
 
+    normalize_by_columns_sum_parser = subparsers.add_parser(
+        "norm_by_col_sum",
+        help="Normalize by column sum to make matrices comparable")
+    normalize_by_columns_sum_parser.set_defaults(func=normalize_by_columns_sum)
+    normalize_by_columns_sum_parser.add_argument(
+        "--input_matrix", "-m", required=True)
+    normalize_by_columns_sum_parser.add_argument(
+        "--output_matrix", "-o", required=True)
+
     submatrix_parser = subparsers.add_parser(
         "submatrix", help="Extract submatrices")
     submatrix_parser.set_defaults(func=submatrix)
@@ -108,6 +117,10 @@ def hicpro2homer(args):
     hicsuntdracones.hicpro2homer.hicpro2homer(
         args.input_bed, args.input_matrix, args.output_matrix)
 
+def normalize_by_columns_sum(args):
+    hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(args.input_matrix)
+    hic_matrix.normalize_by_columns_sum()
+    hic_matrix.save(args.output_matrix)
 
 def submatrix(args):
     """
