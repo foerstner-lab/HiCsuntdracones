@@ -5,6 +5,7 @@
 import argparse
 import hicsuntdracones.hicpro2homer
 import hicsuntdracones.submatrix
+import hicsuntdracones.hicmatrix
 
 __author__ = "Konrad Foerstner <konrad@foerstner.org>"
 __copyright__ = "2018 by Konrad Foerstner <konrad@foerstner.org>"
@@ -32,9 +33,10 @@ def main():
     hicpro2homer_parser.add_argument("--input_matrix", "-m", required=True)
     hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True)
 
-    shape_parser = subparsers.add_parser(
-        "shape", help="Return the shape of the matrix")
-    shape_parser.set_defaults(func=shape)
+    number_of_bins_parser = subparsers.add_parser(
+        "number_of_bins", help="Return the number of bins of the matrix")
+    number_of_bins_parser.set_defaults(func=number_of_bins)
+    number_of_bins_parser.add_argument("--input_matrix", "-m", required=True)
 
     submatrix_parser = subparsers.add_parser(
         "submatrix", help="Extract submatrices")
@@ -83,11 +85,12 @@ def show_version():
     """
     print(__version__)
 
-def shape():
+def number_of_bins(args):
     """
-    Print the shape of the matrix
+    Return the number of bins
     """
-    pass
+    hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(args.input_matrix)
+    print(hic_matrix.number_of_bins)
 
 def hicpro2homer(args):
     """
