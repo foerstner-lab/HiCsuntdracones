@@ -58,7 +58,13 @@ def main():
     submatrix_parser.add_argument(
         "--matrix", "-m", dest="matrix_file", required=True)
     submatrix_parser.add_argument("--output_prefix", "-o", required=True)
-    submatrix_parser.add_argument("--chromosome", "-c")
+    submatrix_parser.add_argument(
+        "--keep_pattern", "-k",
+        help="Bins matching this pattern are explicitly kept."
+        "Removing is stronger than keeping.")
+    submatrix_parser.add_argument(
+        "--remove_pattern", "-r",
+        help="Are explicitly removed. Removing is stronger than keeping")
     submatrix_parser.add_argument("--delimiter", "-d", default="-")
 
     diff_matrix_parser = subparsers.add_parser(
@@ -127,7 +133,7 @@ def submatrix(args):
     Extract a submatrix
     """
     hicsuntdracones.submatrix.extract(
-        args.matrix_file, args.output_prefix, args.chromosome, args.delimiter)
+        args.matrix_file, args.output_prefix, args.keep_pattern, args.remove_pattern, args.delimiter)
 
 def matrix_heatmap(args):
     """
