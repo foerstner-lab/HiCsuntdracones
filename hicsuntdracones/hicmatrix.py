@@ -5,9 +5,12 @@ import pandas as pd
 
 class HiCMatrix():
 
-    def __init__(self, hic_matrix_file: str):
-        self._hic_matrix_file = hic_matrix_file
-        self._read_matrix()
+    def __init__(self, hic_matrix_file=None, hic_matrix_df=None):
+        if hic_matrix_file is not None:
+            self._hic_matrix_file = hic_matrix_file
+            self._read_matrix()
+        elif hic_matrix_df is not None:
+            self.hic_matrix_df = hic_matrix_df
 
     def _read_matrix(self):
         self._check_file()
@@ -25,6 +28,14 @@ class HiCMatrix():
         no_of_rows, no_of_columns = self.hic_matrix_df.shape
         if not no_of_columns - 2 == no_of_rows:
             sys.stderr.write("Unexpected ratio of columns and rows."
+                             "Is this really a HiC matrix in Homer format?")
+            sys.exit(1)
+        if not self.hic_matrix_df.columns[0] == "HiCMatrix":
+            sys.stderr.write("Missing column 'HiCMatrix'."
+                             "Is this really a HiC matrix in Homer format?")
+            sys.exit(1)
+        if not self.hic_matrix_df.columns[1] == "Regions":
+            sys.stderr.write("Missing column 'Regions'."
                              "Is this really a HiC matrix in Homer format?")
             sys.exit(1)
     
@@ -55,9 +66,47 @@ class HiCMatrix():
         return sorted(self.hic_matrix_df[
             "Regions"].apply(remove_position_information).unique())
 
+    def select(self, keep_pattern=None, remove_pattern=None, inplace=False):
+        """Select a submatrix based on given filters of the bin names.
 
-def remove_position_information(name_with_pos_info):
+        We like minimalism => Removing is stronger than keeping.
+        """
+        if inplace:
+            self.hic_matrix_df = self._select(
+                keep_pattern=keep_pattern, remove_pattern=remove_pattern)
+        else:
+            return HiCMatrix(hic_matrix_df=self._select(
+                keep_pattern=keep_pattern, remove_pattern=remove_pattern))
+
+    def _select(self, keep_pattern=None, remove_pattern=None):
+        filtered_bins = self.bins()
+        if keep_pattern is not None:
+            filtered_bins = filtered_bins[
+                filtered_bins.str.contains(keep_pattern)]
+        if remove_pattern is not None:
+            filtered_bins = filtered_bins[
+                ~ filtered_bins.str.contains(remove_pattern)]
+        # Filter columns
+        submatrix = self.hic_matrix_df[
+            ["HiCMatrix", "Regions"] + filtered_bins.tolist()]
+        # Filter rows
+        submatrix = submatrix[
+            submatrix["HiCMatrix"].isin(filtered_bins.tolist())]
+        #  As the index still still based on the odering before
+        #  removing row the index has to be written.
+        submatrix.index = range(len(submatrix))
+        return submatrix
+
+    def bins(self):
+        return self.hic_matrix_df["Regions"].rename("bins", inplace=True)
+
+
+def remove_position_information(name_with_pos_info: str):
     # Return just the chromosome part without the exact window
     # location
     return "-".join(name_with_pos_info.split("-")[:-1])
+
+
+def read_hic_matrix(input_file: str):
+    return HiCMatrix(hic_matrix_file=input_file)
 
