@@ -5,6 +5,7 @@
 import argparse
 import hicsuntdracones.hicpro2homer
 import hicsuntdracones.hicmatrix
+import hicsuntdracones.colocalization
 
 __author__ = "Konrad Foerstner <konrad@foerstner.org>"
 __copyright__ = "2018 by Konrad Foerstner <konrad@foerstner.org>"
@@ -92,6 +93,19 @@ def main():
     colocalisation_parser = subparsers.add_parser(
          "colocalisation", help="Perform colocalisation analysis")
     colocalisation_parser.set_defaults(func=colocalisation)
+    colocalisation_parser.add_argument("--matrix", "-m", dest="matrix_file", required=True)
+    colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True)
+    colocalisation_parser.add_argument("--feature", "-f", required=True)
+    colocalisation_parser.add_argument("--bin_size", "-b", required=True, type=int)
+    colocalisation_parser.add_argument(
+        "--number_of_subsamplings", "-s", default=1, type=int, help="Default 1")
+    colocalisation_parser.add_argument("--output_prefix", "-o", required=True)
+    colocalisation_parser.add_argument(
+        "--margin", "-r", default=0, type=int, help="Default 0")
+    colocalisation_parser.add_argument(
+        "--flanks_only", "-l", default=False, action="store_true")
+    colocalisation_parser.add_argument(
+        "--remove_zeros", "-z", default=False, action="store_true")
 
     args = parser.parse_args()
     if "func" in dir(args):
@@ -167,6 +181,6 @@ def dist_dep_decay(args):
     pass
 
 def colocalisation(args):
-    pass
+    hicsuntdracones.colocalization.analyse_colocalization(args)
 
 main()
