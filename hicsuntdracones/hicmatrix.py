@@ -100,6 +100,33 @@ class HiCMatrix():
     def bins(self):
         return self.hic_matrix_df["Regions"].rename("bins", inplace=True)
 
+    def div_by(self, denominator_matrix, pseudocount=0.001, inplace=False):
+        if inplace:
+            self.hic_matrix_df = self._div_by(
+                denominator_matrix, pseudocount=pseudocount)
+        else:
+            return HiCMatrix(hic_matrix_df=self._div_by(
+                denominator_matrix, pseudocount=pseudocount))
+
+    def _div_by(self, denominator_matrix, pseudocount) -> pd.DataFrame:
+        """
+
+        Add pseudocount first and then normalize to make sure that
+        column sums are the same.
+        """
+        numerator_matrix_values = self.matrix_values() + pseudocount
+        denominator_matrix_values = (
+            denominator_matrix.matrix_values() + pseudocount)
+        diff_matrix = numerator_matrix_values / denominator_matrix_values
+        return pd.concat([self.hic_matrix_df[[
+            "HiCMatrix", "Regions"]], diff_matrix],
+                         axis=1, join_axes=[self.hic_matrix_df.index])
+
+    def matrix_values(self):
+        """Return the matrix without the bin name columns.
+        """
+        return self.hic_matrix_df.ix[0:, 2:]
+
 
 def remove_position_information(name_with_pos_info: str):
     # Return just the chromosome part without the exact window

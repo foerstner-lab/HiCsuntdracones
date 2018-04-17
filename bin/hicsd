@@ -72,6 +72,8 @@ def main():
     diff_matrix_parser.add_argument("--numerator_matrix", "-n", required=True)
     diff_matrix_parser.add_argument("--denominator_matrix", "-d",
                                     required=True)
+    diff_matrix_parser.add_argument("--pseudocount", "-p", default=0.001,
+                                    help="Default 0.001")
     diff_matrix_parser.add_argument("--output_matrix", "-o", required=True)
 
     matrix_heatmap_parser = subparsers.add_parser(
@@ -148,7 +150,12 @@ def diff_matrix(args):
     Generate differential matrix by dividing the values of one matrix
     by the values of the other.
     """
-    pass
+    hic_matrix_numerator = hicsuntdracones.hicmatrix.read_hic_matrix(
+        args.numerator_matrix)
+    hic_matrix_denominator_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(
+        args.denominator_matrix)
+    hic_matrix_numerator.div_by(hic_matrix_denominator_matrix, inplace=True)
+    hic_matrix_numerator.save(args.output_matrix)
 
 def virtual_4C(args):
     """
