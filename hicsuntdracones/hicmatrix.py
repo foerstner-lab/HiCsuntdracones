@@ -1,7 +1,12 @@
 import sys
 import numpy as np
 import pandas as pd
-
+import matplotlib
+matplotlib.use("Agg")
+from matplotlib.backends.backend_pdf import PdfPages
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import ndimage
 
 class HiCMatrix():
 
@@ -127,6 +132,68 @@ class HiCMatrix():
         """
         return self.hic_matrix_df.ix[0:, 2:]
 
+    def heatmap(self, vmin=None, vmax=None, by_chrom=False, rotate=False,
+                output_pdf=None, output_png_prefix=None, png_dpi=600):
+        self._vmax = vmax
+        self._vmin = vmin
+        self._output_pdf = output_pdf
+        self._output_png_prefix = output_png_prefix
+        self._pp = None
+        self._png_dpi = png_dpi
+        self._rotate = rotate
+        if not by_chrom:
+            self._plot_heatmap_globally()
+        else:
+            self._plot_heatmap_split_by_chrom()
+        if self._output_pdf is not None:
+            self._pp.close()
+
+    def _plot_heatmap_globally(self):
+        self._plot_heatmap(self)
+
+    def _plot_heatmap_split_by_chrom(self):
+        chroms = sorted(set([
+            "-".join(genome_bin.split("-")[:-1])
+            for genome_bin in self.matrix_values().columns]))
+        for chrom in chroms:
+            chrom_hic_matrix = self.select(keep_pattern=chrom)
+            # Make sure that at lest 2 bin are in the submatrix
+            if chrom_hic_matrix.hic_matrix_df.shape[0] < 2:
+                print("Skipping {}".format(chrom))
+                continue
+            self._plot_heatmap(chrom_hic_matrix, title=chrom)
+    
+    def _plot_heatmap(self, hic_matrix, title=""):
+        matrix_values = hic_matrix.matrix_values()
+        if self._rotate:
+            matrix_values = ndimage.rotate(matrix_values, 45.0)
+            matrix_values = matrix_values[
+                :int(matrix_values.shape[0]/2), :]
+        heatmap = sns.heatmap(
+            matrix_values, square=True,
+            vmax=self._vmax, vmin=self._vmin,
+            xticklabels=False, yticklabels=False,
+            cmap=sns.cubehelix_palette(n_colors=500))
+        plt.title(title)
+        plt.tight_layout()
+        self._write_heatmap_to_file(heatmap, title=title)
+        plt.close()
+
+    def _write_heatmap_to_file(self, heatmap, title=""):
+        if self._output_pdf is not None:
+            if self._pp is None:
+                self._pp = PdfPages(self._output_pdf)
+            self._pp.savefig(heatmap.figure)
+        elif self._output_png_prefix is not None:
+            if title == "":
+                output_file_name = self._output_png_prefix + ".png"
+            else:
+                output_file_name = "{}_{}.png".format(
+                    self._output_png_prefix, title)
+            heatmap.figure.savefig(output_file_name, dpi=self._png_dpi)
+        else:
+            raise MissingOutputFile
+
 
 def remove_position_information(name_with_pos_info: str):
     # Return just the chromosome part without the exact window
@@ -137,3 +204,6 @@ def remove_position_information(name_with_pos_info: str):
 def read_hic_matrix(input_file: str):
     return HiCMatrix(hic_matrix_file=input_file)
 
+
+def MissingOutputFile(BaseException):
+    pass

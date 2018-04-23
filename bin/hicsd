@@ -88,11 +88,18 @@ def main():
     matrix_heatmap_parser.add_argument(
         "--vmax", "-a", type=float, default=None)
     matrix_heatmap_parser.add_argument(
+        "--rotate", "-r", default=False, action="store_true",
+        help="Rotate 45 degrees. Pyramids FTW!")
+    matrix_heatmap_parser.add_argument(
+        "--by_chrom", "-c", default=False, action="store_true")
+    matrix_heatmap_parser.add_argument(
         "--output_pdf", "-p", help="Name of the output file. All figures "
         "will be written into this single file")
     matrix_heatmap_parser.add_argument(
         "--output_png_prefix", "-n", help="Prefix for output png files. "
         "Each figure file be stored in a separate file.")
+    matrix_heatmap_parser.add_argument(
+        "--png_dpi", "-d")    
 
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
@@ -190,7 +197,11 @@ def matrix_heatmap(args):
     """
     Plot matrix heatmap
     """
-    hicsuntdracones.heatmap.plot_heatmap(args)
+    hic_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(args.matrix_file)
+    hic_matrix.heatmap(
+        vmin=args.vmin, vmax=args.vmax, by_chrom=args.by_chrom,
+        rotate=args.rotate, output_pdf=args.output_pdf,
+        output_png_prefix=args.output_png_prefix, png_dpi=args.png_dpi)
 
 def diff_matrix(args):
     """
