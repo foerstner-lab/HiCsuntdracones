@@ -53,8 +53,6 @@ class ColocalizationTester(object):
         hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(self._matrix_file)
         hic_matrix.normalize_by_columns_sum()
         self._interaction_matrix = hic_matrix.hic_matrix_df
-        # self._interaction_matrix["Regions"] = self._interaction_matrix[
-        #     "Regions"].apply(remove_position_information)
         self._interaction_matrix.set_index(
             self._interaction_matrix["Regions"], inplace=True)
 

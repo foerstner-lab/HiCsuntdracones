@@ -6,12 +6,13 @@ import argparse
 import hicsuntdracones.hicpro2homer
 import hicsuntdracones.hicmatrix
 import hicsuntdracones.colocalization
+import hicsuntdracones.diffcolocalization
 
 __author__ = "Konrad Foerstner <konrad@foerstner.org>"
 __copyright__ = "2018 by Konrad Foerstner <konrad@foerstner.org>"
 __license__ = "ISC license"
 __email__ = "konrad@foerstner.org"
-__version__ = "0.1.0"
+__version__ = "0.1.0dev"
 
 
 def main():
@@ -80,6 +81,18 @@ def main():
     matrix_heatmap_parser = subparsers.add_parser(
         "matrix_heatmap", help="Plot interaction matix heatmap")
     matrix_heatmap_parser.set_defaults(func=matrix_heatmap)
+    matrix_heatmap_parser.add_argument(
+        "--matrix", "-m", dest="matrix_file", required=True)
+    matrix_heatmap_parser.add_argument(
+        "--vmin", "-i", type=float, default=None)
+    matrix_heatmap_parser.add_argument(
+        "--vmax", "-a", type=float, default=None)
+    matrix_heatmap_parser.add_argument(
+        "--output_pdf", "-p", help="Name of the output file. All figures "
+        "will be written into this single file")
+    matrix_heatmap_parser.add_argument(
+        "--output_png_prefix", "-n", help="Prefix for output png files. "
+        "Each figure file be stored in a separate file.")
 
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
@@ -91,7 +104,7 @@ def main():
     # output plot and/or text file
 
     colocalisation_parser = subparsers.add_parser(
-         "colocalisation", help="Perform colocalisation analysis")
+         "colo", help="Perform colocalisation analysis")
     colocalisation_parser.set_defaults(func=colocalisation)
     colocalisation_parser.add_argument("--matrix", "-m", dest="matrix_file", required=True)
     colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True)
@@ -106,6 +119,26 @@ def main():
         "--flanks_only", "-l", default=False, action="store_true")
     colocalisation_parser.add_argument(
         "--remove_zeros", "-z", default=False, action="store_true")
+
+    diff_colocalisation_parser = subparsers.add_parser(
+         "colo_diff", help="Perform differential colocalisation analysis")
+    diff_colocalisation_parser.set_defaults(func=diff_colocalisation)
+    diff_colocalisation_parser.add_argument(
+        "--matrix_1", "-1", dest="matrix_file_1", required=True)
+    diff_colocalisation_parser.add_argument(
+        "--matrix_2", "-2", dest="matrix_file_2", required=True)    
+    diff_colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True)
+    diff_colocalisation_parser.add_argument("--feature", "-f", required=True)
+    diff_colocalisation_parser.add_argument("--bin_size", "-b", required=True, type=int)
+    diff_colocalisation_parser.add_argument(
+        "--number_of_subsamplings", "-s", default=1, type=int, help="Default 1")
+    diff_colocalisation_parser.add_argument("--output_prefix", "-o", required=True)
+    diff_colocalisation_parser.add_argument(
+        "--margin", "-r", default=0, type=int, help="Default 0")
+    diff_colocalisation_parser.add_argument(
+        "--flanks_only", "-l", default=False, action="store_true")
+    diff_colocalisation_parser.add_argument(
+        "--remove_zeros", "-z", default=False, action="store_true")    
 
     args = parser.parse_args()
     if "func" in dir(args):
@@ -157,7 +190,7 @@ def matrix_heatmap(args):
     """
     Plot matrix heatmap
     """
-    pass
+    hicsuntdracones.heatmap.plot_heatmap(args)
 
 def diff_matrix(args):
     """
@@ -182,5 +215,8 @@ def dist_dep_decay(args):
 
 def colocalisation(args):
     hicsuntdracones.colocalization.analyse_colocalization(args)
+
+def diff_colocalisation(args):
+    hicsuntdracones.diffcolocalization.analyse_diff_colocalization(args)
 
 main()
