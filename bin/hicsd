@@ -99,7 +99,7 @@ def main():
         "--output_png_prefix", "-n", help="Prefix for output png files. "
         "Each figure file be stored in a separate file.")
     matrix_heatmap_parser.add_argument(
-        "--png_dpi", "-d")    
+        "--png_dpi", "-d", type=int)
 
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
