@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import ndimage
 
+
 class HiCMatrix():
 
     def __init__(self, hic_matrix_file=None, hic_matrix_df=None):
@@ -159,7 +160,8 @@ class HiCMatrix():
             chrom_hic_matrix = self.select(keep_pattern=chrom)
             # Make sure that at lest 2 bin are in the submatrix
             if chrom_hic_matrix.hic_matrix_df.shape[0] < 2:
-                print("Skipping {}".format(chrom))
+                print("Skipping {} as the number of bins is too low.".format(
+                    chrom))
                 continue
             self._plot_heatmap(chrom_hic_matrix, title=chrom)
     
