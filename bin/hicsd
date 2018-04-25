@@ -78,27 +78,27 @@ def main():
                                     help="Default 0.001")
     diff_matrix_parser.add_argument("--output_matrix", "-o", required=True)
 
-    matrix_heatmap_parser = subparsers.add_parser(
-        "matrix_heatmap", help="Plot interaction matix heatmap")
-    matrix_heatmap_parser.set_defaults(func=matrix_heatmap)
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser = subparsers.add_parser(
+        "heatmap", help="Plot interaction matix heatmap")
+    heatmap_parser.set_defaults(func=matrix_heatmap)
+    heatmap_parser.add_argument(
         "--matrix", "-m", dest="matrix_file", required=True)
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--vmin", "-i", type=float, default=None)
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--vmax", "-a", type=float, default=None)
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--rotate", "-r", default=False, action="store_true",
         help="Rotate 45 degrees. Pyramids FTW!")
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--by_chrom", "-c", default=False, action="store_true")
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--output_pdf", "-p", help="Name of the output file. All figures "
         "will be written into this single file")
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--output_png_prefix", "-n", help="Prefix for output png files. "
         "Each figure file be stored in a separate file.")
-    matrix_heatmap_parser.add_argument(
+    heatmap_parser.add_argument(
         "--png_dpi", "-d", type=int)
 
     virtual_4C_parser = subparsers.add_parser(

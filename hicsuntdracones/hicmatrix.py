@@ -171,6 +171,8 @@ class HiCMatrix():
             matrix_values = ndimage.rotate(matrix_values, 45.0)
             matrix_values = matrix_values[
                 :int(matrix_values.shape[0]/2), :]
+        if self._vmin is None:
+            self._vmin = min(self.matrix_values().min())
         heatmap = sns.heatmap(
             matrix_values, square=True,
             vmax=self._vmax, vmin=self._vmin,
