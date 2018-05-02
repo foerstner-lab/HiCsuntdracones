@@ -76,6 +76,10 @@ def main():
                                     required=True)
     diff_matrix_parser.add_argument("--pseudocount", "-p", default=0.001,
                                     help="Default 0.001")
+    diff_matrix_parser.add_argument(
+        "--norm_by_col_sum", "-c", default=False, action="store_true",
+        help="Normalize the matrices by column sum before performing "
+        "the division.")
     diff_matrix_parser.add_argument("--output_matrix", "-o", required=True)
 
     heatmap_parser = subparsers.add_parser(
@@ -99,7 +103,9 @@ def main():
         "--output_png_prefix", "-n", help="Prefix for output png files. "
         "Each figure file be stored in a separate file.")
     heatmap_parser.add_argument(
-        "--png_dpi", "-d", type=int)
+        "--png_dpi", "-e", type=int)
+    heatmap_parser.add_argument(
+        "--differential", "-d", default=False, action="store_true")
 
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
@@ -201,7 +207,8 @@ def matrix_heatmap(args):
     hic_matrix.heatmap(
         vmin=args.vmin, vmax=args.vmax, by_chrom=args.by_chrom,
         rotate=args.rotate, output_pdf=args.output_pdf,
-        output_png_prefix=args.output_png_prefix, png_dpi=args.png_dpi)
+        output_png_prefix=args.output_png_prefix, png_dpi=args.png_dpi,
+        differential=args.differential)
 
 def diff_matrix(args):
     """
@@ -212,6 +219,9 @@ def diff_matrix(args):
         args.numerator_matrix)
     hic_matrix_denominator_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(
         args.denominator_matrix)
+    if args.norm_by_col_sum:
+        hic_matrix_numerator.normalize_by_columns_sum()
+        hic_matrix_denominator_matrix.normalize_by_columns_sum()
     hic_matrix_numerator.div_by(hic_matrix_denominator_matrix, inplace=True)
     hic_matrix_numerator.save(args.output_matrix)
 

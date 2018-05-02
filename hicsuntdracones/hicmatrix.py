@@ -134,7 +134,8 @@ class HiCMatrix():
         return self.hic_matrix_df.ix[0:, 2:]
 
     def heatmap(self, vmin=None, vmax=None, by_chrom=False, rotate=False,
-                output_pdf=None, output_png_prefix=None, png_dpi=600):
+                output_pdf=None, output_png_prefix=None, png_dpi=600,
+                differential=False):
         self._vmax = vmax
         self._vmin = vmin
         self._output_pdf = output_pdf
@@ -142,6 +143,7 @@ class HiCMatrix():
         self._pp = None
         self._png_dpi = png_dpi
         self._rotate = rotate
+        self._differential = differential
         if not by_chrom:
             self._plot_heatmap_globally()
         else:
@@ -173,11 +175,15 @@ class HiCMatrix():
                 :int(matrix_values.shape[0]/2), :]
         if self._vmin is None:
             self._vmin = min(self.matrix_values().min())
+        cmap = sns.cubehelix_palette(n_colors=500)
+        if self._differential is True:
+            cmap = sns.color_palette("RdBu_r", 500)
+            matrix_values = np.log2(matrix_values)
         heatmap = sns.heatmap(
             matrix_values, square=True,
             vmax=self._vmax, vmin=self._vmin,
             xticklabels=False, yticklabels=False,
-            cmap=sns.cubehelix_palette(n_colors=500))
+            cmap=cmap)
         plt.title(title)
         plt.tight_layout()
         self._write_heatmap_to_file(heatmap, title=title)
