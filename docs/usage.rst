@@ -31,4 +31,5 @@ Virtual 4C
 This tool enables to use any region of choice from the full-genome HiC matrix as bait for a virtual 4C. The regions of choice can be submitted in gff format (see example: Chromosome – start – end). Subsequently, these genomic regions are translated into the corresponding bins of the HiC matrix and the affected columns are extracted. If several columns were selected, an average interaction value for every genomic bin is calculated. The interaction values for each bin are translated into a wiggle file, where step and window size correspond to the resolution of the input matrix. 
 
 Distance Dependent Decay
+
 The Distance Dependent Decay calculates bin-wise the mean or median interaction frequencies for any given genomic distance. This can be done for individual chromosomes or across multiple chromosomes. Further, the analysis can be conducted arm-wise by splitting the individual chromosomes at the site of the centromere (requires positional information about the centromeres).
