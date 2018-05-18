@@ -1,3 +1,4 @@
+from collections import defaultdict
 import sys
 import numpy as np
 import pandas as pd
@@ -19,6 +20,19 @@ class HiCMatrix():
             self.hic_matrix_df = hic_matrix_df
 
     def _read_matrix(self):
+        """
+        |-----------+-----------+--------+-----------+-----+--------+-----------|
+        | HiCMatrix | Regions   | chr1-0 | chr1-1000 | ... | chr2-0 | chr2-1000 |
+        |-----------+-----------+--------+-----------+-----+--------+-----------|
+        | chr1-0    | chr1-0    |        |           |     |        |           |
+        | chr1-1000 | chr1-1000 |        |           |     |        |           |
+        | chr1-2000 | chr1-2000 |        |           |     |        |           |
+        | ...       | ...       |        |           |     |        |           |
+        | chr2-0    | chr2-0    |        |           |     |        |           |
+        | chr2-1000 | chr2-1000 |        |           |     |        |           |
+        | ...       | ...       |        |           |     |        |           |
+
+        """
         self._check_file()
         self.hic_matrix_df = pd.read_table(self._hic_matrix_file)
         self._check_hic_matrix_df()
@@ -204,6 +218,61 @@ class HiCMatrix():
         else:
             raise MissingOutputFile
 
+    def calc_distance_dependent_decay(self, bin_size=None):
+        if bin_size is None:
+            sys.stdout.write("No bin size set.\n")
+            sys.exit(1)
+        self._chroms_dists_and_countings = {}
+        for chrom in self.chromosomes:
+            self._get_counts_for_chroms(chrom, bin_size)
+        return self._chroms_dists_and_countings
+
+    def _get_counts_for_chroms(self, chrom, bin_size):
+        """
+               +-----------+
+               |           |
+               |           |
+               +-------+   |
+               |       |   |
+               |       |   |
+               +---+   |   |
+               |   |   |   |
+               |   v   v   v
+             |---|---|---|---|---|---|---|
+        Bin    1   2   3   4   5   6   7 ...
+
+        The bin that is compared to the other bins are the column of the
+        table, the bins they are compared to are the rows. Th
+        """
+
+        # Generate submatrix for this chromosome as only
+        # intra-chromosomal interactions should be considered
+        submatrix = self.select(keep_pattern=chrom)
+        seen_pairs = set()
+        col_counter = 0
+        self._chroms_dists_and_countings[chrom] = {}
+        self._chroms_dists_and_countings[chrom]["dists"] = np.array([])
+        self._chroms_dists_and_countings[chrom]["countings"] = np.array([])
+        for col_bin in submatrix.matrix_values():
+            col_counter += 1
+            row_counter = 0
+            for counting, row_bin in zip(
+                    submatrix.hic_matrix_df[col_bin],
+                    submatrix.hic_matrix_df["Regions"]):
+                row_counter += 1
+                bin_pair = tuple(sorted([row_bin, col_bin]))
+                # Skip bin pair comparison measured before
+                if bin_pair in seen_pairs:
+                    continue
+                seen_pairs.add(bin_pair)
+                # Calculate the distance between the two considered bins
+                dist = abs(row_counter - col_counter) * bin_size
+                self._chroms_dists_and_countings[chrom]["dists"] = np.append(
+                    self._chroms_dists_and_countings[chrom]["dists"], dist)
+                self._chroms_dists_and_countings[chrom][
+                    "countings"] = np.append(
+                        self._chroms_dists_and_countings[chrom]["countings"],
+                        counting)
 
 def remove_position_information(name_with_pos_info: str):
     # Return just the chromosome part without the exact window

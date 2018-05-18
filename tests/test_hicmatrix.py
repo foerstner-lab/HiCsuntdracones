@@ -186,3 +186,53 @@ def test_div_matrix_inplace():
              "chr2-0": [1.0, 1.0, 1.0, 1.0],
              "chr2-10000": [1.0, 1.0, 1.0, 1.0]}),
         hic_matrix_1.hic_matrix_df)
+
+
+def test__get_counts_for_chroms():
+    hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(
+        "tests/fixtures/homer_matrix.txt")
+    chroms_dists_and_countings = hic_matrix.calc_distance_dependent_decay(
+        10000)
+    expected_chroms_dists_and_countings = {
+        "chr1": {
+            "countings": np.array(
+                [54,  7, 96, 42, 11,
+                 97, 48, 86, 84,
+                 91, 95, 49,
+                 57, 14,
+                 70]),
+            "dists": np.array([
+                0, 10000, 20000, 30000, 40000,
+                0, 10000, 20000, 30000,
+                0, 10000, 20000,
+                0, 10000,
+                0])},
+        "chr2" : {
+            "countings": np.array(
+                [87, 93, 93, 20, 61, 52, 18,
+                 92, 94, 87, 42, 34, 97,
+                 54, 11, 23, 20, 50,
+                 49, 48, 5, 12,
+                 81, 76, 13,
+                 14, 85,
+                 16]),
+            "dists": np.array([
+                0, 10000, 20000, 30000, 40000, 50000, 60000,
+                0, 10000, 20000, 30000, 40000, 50000,
+                0, 10000, 20000, 30000, 40000,
+                0, 10000, 20000, 30000,
+                0, 10000, 20000,
+                0, 10000,
+                0])}}
+    np.testing.assert_array_equal(
+        chroms_dists_and_countings["chr1"]["countings"],
+        expected_chroms_dists_and_countings["chr1"]["countings"])
+    np.testing.assert_array_equal(
+        chroms_dists_and_countings["chr1"]["dists"],
+        expected_chroms_dists_and_countings["chr1"]["dists"])
+    np.testing.assert_array_equal(
+        chroms_dists_and_countings["chr2"]["countings"],
+        expected_chroms_dists_and_countings["chr2"]["countings"])
+    np.testing.assert_array_equal(
+        chroms_dists_and_countings["chr2"]["dists"],
+        expected_chroms_dists_and_countings["chr2"]["dists"])
