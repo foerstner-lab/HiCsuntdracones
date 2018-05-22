@@ -8,6 +8,7 @@ import hicsuntdracones.hicmatrix
 import hicsuntdracones.colocalization
 import hicsuntdracones.diffcolocalization
 import hicsuntdracones.distdepdecay
+import hicsuntdracones.virtual4c
 
 __author__ = "Konrad Foerstner <konrad@foerstner.org>"
 __copyright__ = "2018 by Konrad Foerstner <konrad@foerstner.org>"
@@ -111,6 +112,11 @@ def main():
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
     virtual_4C_parser.set_defaults(func=virtual_4C)
+    virtual_4C_parser.add_argument("--matrix_file", required=True)
+    virtual_4C_parser.add_argument("--gff_file", required=True)
+    virtual_4C_parser.add_argument("--bin_size", type=int, required=True)
+    virtual_4C_parser.add_argument("--track_name", required=True)
+    virtual_4C_parser.add_argument("--output_file", required=True)
 
     dist_dep_decay_parser = subparsers.add_parser(
         "dist_dep_decay", help="Distant dependent decay")
@@ -238,7 +244,13 @@ def virtual_4C(args):
     """
     Perform virtual 4C analysis
     """
-    pass
+    virtual_4c = hicsuntdracones.virtual4c.Virtual4C(
+        args.matrix_file, args.gff_file, args.bin_size, args.track_name,
+        args.output_file)
+    virtual_4c.read_gff_file()
+    virtual_4c.read_matrix_file_and_add_as_features()
+    virtual_4c.extract_features_overlapping_bins()
+    virtual_4c.generate_wiggle_file()
 
 def colocalisation(args):
     hicsuntdracones.colocalization.analyse_colocalization(args)

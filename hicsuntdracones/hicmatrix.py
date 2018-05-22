@@ -274,10 +274,15 @@ class HiCMatrix():
                         self._chroms_dists_and_countings[chrom]["countings"],
                         counting)
 
+
 def remove_position_information(name_with_pos_info: str):
     # Return just the chromosome part without the exact window
     # location
     return "-".join(name_with_pos_info.split("-")[:-1])
+
+
+def bin_number(name_with_pos_info: int):
+    return int(name_with_pos_info.split("-")[-1])
 
 
 def read_hic_matrix(input_file: str):
