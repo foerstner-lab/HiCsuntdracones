@@ -1,6 +1,6 @@
-===========================================================
-HiC sunt dracones - Your little helper for the HiC analysis
-===========================================================
+=======================================================
+HiC sunt dracones - Your little helper for HiC analyses
+=======================================================
 
 
 .. image:: https://img.shields.io/pypi/v/hicsuntdracones.svg
