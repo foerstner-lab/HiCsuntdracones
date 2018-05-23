@@ -41,6 +41,31 @@ Usage
     optional arguments:
       -h, --help  show this help message and exit
 
+
+    usage: hicsd [-h]
+                 {version,hicpro2homer,number_of_bins,chromosomes,norm_by_col_sum,submatrix,diff_matrix,heatmap,virtual_4C,dist_dep_decay,colo,colo_diff}
+                 ...
+
+    positional arguments:
+      {version,hicpro2homer,number_of_bins,chromosomes,norm_by_col_sum,submatrix,diff_matrix,heatmap,virtual_4C,dist_dep_decay,colo,colo_diff}
+                            commands
+        version             Show version
+        hicpro2homer        Convert a matrix in HiC-Pro format to Homer format
+        number_of_bins      Return the number of bins of the matrix
+        chromosomes         Return the chromosomes used in the matrix
+        norm_by_col_sum     Normalize by column sum to make matrices comparable
+        submatrix           Extract submatrices
+        diff_matrix         Generate differential matrix by dividing the values of
+                            one matrix by the values of the other.
+        heatmap             Plot interaction matix heatmap
+        virtual_4C          Perform virtual 4C analysis
+        dist_dep_decay      Distant dependent decay
+        colo                Perform colocalisation analysis
+        colo_diff           Perform differential colocalisation analysis
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      
 ------
 Trivia
 ------
