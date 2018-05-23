@@ -6,7 +6,7 @@ Development Lead
 ----------------
 
 * Konrad Förstner <konrad@foerstner.org>
-* Laura Müller
+* Laura Müller <Laura.Mueller-Huebner@para.vetmed.uni-muenchen.de>
 
 Contributors
 ------------
