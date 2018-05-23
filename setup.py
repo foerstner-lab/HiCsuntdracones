@@ -33,6 +33,12 @@ setup(
     author="Konrad Förstner",
     author_email='konrad@foerstner.org',
     url='https://github.com/konrad/hicsuntdracones',
+    install_requires=[
+        "matplotlib >= 1.5.1",
+        "pandas >= 0.18.1",
+        "gffutils",
+        "numpy"
+    ],
     packages=find_packages(include=['hicsuntdracones']),
     include_package_data=True,
     install_requires=requirements,
