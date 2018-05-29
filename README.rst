@@ -26,6 +26,8 @@ Welcome to HiC sunt dracones (or HiCSD in short).
 Why should you use HiC sunt dracones?
 -------------------------------------
 
+The functions of HiCsd are built on both Hi-C Pro matrices and Homer matrices. HiCsd uses HiCUP for truncation and filtering of reads and implicit matrix normalization (ICEing) as implemented Hi-C Pro. It is further possible, to explicitly normalize read counts of certain regions in the raw matrix for relative differences in ploidy. HiCsd then allows to analyse the full HiC matrix, differential matrices, a desired subset of a matrix (submatrix) as well as individual chromosomes. These matrices can be visualized either as full heatmaps or triangles with color and scale of the heatmaps adjustable. Using HiCsd, testing colocalization of loci of interest is easy as HiCsd can pick these loci from a genome annotation by searching for given keywords or by feeding a list of loci of interest into the program. Also, HiCsd is able to compare the interaction frequencies of distinct loci between different matrices. 
+The distance dependent decay of interaction frequencies can be calculated for both, individual chromosomes or as a mean/median function including all chromosomes of choice. Also, HiCsd is able to extract the interaction frequencies between any locus of choice with all other genomic loci, thus generating 4C-like profiles in wiggle format, that can easily be explored and compared using a common genome browser.
 
 	    
 -----
