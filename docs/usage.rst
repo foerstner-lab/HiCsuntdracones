@@ -7,10 +7,8 @@ combined with any tool that maps, filters and normalizes Hi-C data to
 generate a matrix. In this case, BWA, HICUP and Hi-C Pro were used to
 generate interaciton matrices from sequencing data.
 
-
 .. toctree::
    :maxdepth: 1
-
 
    subcommand_chromosomes.rst
    subcommand_colo_diff.rst
@@ -24,4 +22,3 @@ generate interaciton matrices from sequencing data.
    subcommand_submatrix.rst
    subcommand_virtual_4C.rst
    subcommand_version.rst
-
