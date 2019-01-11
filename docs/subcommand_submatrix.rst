@@ -16,3 +16,7 @@ matrices by dividing the matrix (or submatrix) by a denominator
 matrix. As some bins contain zero values, a pseudocount of choice can
 be added to each bin of the nominator and denominator matrix (default:
 0.001).
+
+::
+
+    $ hicsd submatrix -h
