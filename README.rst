@@ -30,9 +30,9 @@ The functions of HiCsd are built on both Hi-C Pro matrices and Homer matrices. H
 The distance dependent decay of interaction frequencies can be calculated for both, individual chromosomes or as a mean/median function including all chromosomes of choice. Also, HiCsd is able to extract the interaction frequencies between any locus of choice with all other genomic loci, thus generating 4C-like profiles in wiggle format, that can easily be explored and compared using a common genome browser.
 
 	    
------
-Usage
------
+-------------------
+Subcommand overview
+-------------------
 
 ::
     

@@ -8,7 +8,8 @@ Contents:
 
    readme
    installation
-   usage
+   subcommands
+   tutorial
    modules
    contributing
    authors

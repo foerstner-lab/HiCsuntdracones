@@ -1,6 +1,6 @@
-=====
-Usage
-=====
+===========
+Subcommands
+===========
 
 The tool starts from an interaction matrix and can therefore be
 combined with any tool that maps, filters and normalizes Hi-C data to
