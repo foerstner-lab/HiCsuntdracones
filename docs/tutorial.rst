@@ -2,9 +2,9 @@
 Tutorial (example workflow)
 ===========================
 
---------------------
-Enter the the Matrix
---------------------
+----------------
+Enter the Matrix
+----------------
 
 we are working with as HiC matrix in home format. In case you only
 have HiC-Pro formated matrix please use ``hicpro2homer`` for the
