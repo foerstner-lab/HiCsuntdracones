@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """HiC sunt dracones - Your little helper for the HiC analysis"""
-
 import argparse
+import argcomplete
 import hicsuntdracones.hicpro2homer
 import hicsuntdracones.hicmatrix
 import hicsuntdracones.colocalization
@@ -16,7 +16,7 @@ __author__ = ("Konrad Förstner <konrad@foerstner.org> "
 __copyright__ = "2018 by Konrad Förstner <konrad@foerstner.org>"
 __license__ = "ISC license"
 __email__ = "konrad@foerstner.org"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __maintainer__ = "Konrad Förstner"
 
 def main():
@@ -25,11 +25,11 @@ def main():
     """
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(help="commands")
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     show_version_parser = subparsers.add_parser(
         "version", help="Show version")
     show_version_parser.set_defaults(func=show_version)
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     hicpro2homer_parser = subparsers.add_parser(
         "hicpro2homer", help="Convert a matrix in HiC-Pro format to "
         "Homer format")
@@ -37,17 +37,17 @@ def main():
     hicpro2homer_parser.add_argument("--input_bed", "-b", required=True)
     hicpro2homer_parser.add_argument("--input_matrix", "-m", required=True)
     hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True)
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     number_of_bins_parser = subparsers.add_parser(
         "number_of_bins", help="Return the number of bins of the matrix")
     number_of_bins_parser.set_defaults(func=number_of_bins)
     number_of_bins_parser.add_argument("--input_matrix", "-m", required=True)
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     chromosomes_parser = subparsers.add_parser(
         "chromosomes", help="Return the chromosomes used in the matrix")
     chromosomes_parser.set_defaults(func=chromosomes)
-    chromosomes_parser.add_argument("--input_matrix", "-m", required=True)    
-
+    chromosomes_parser.add_argument("--input_matrix", "-m", required=True)
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     normalize_by_columns_sum_parser = subparsers.add_parser(
         "norm_by_col_sum",
         help="Normalize by column sum to make matrices comparable")
@@ -56,7 +56,7 @@ def main():
         "--input_matrix", "-m", required=True)
     normalize_by_columns_sum_parser.add_argument(
         "--output_matrix", "-o", required=True)
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     submatrix_parser = subparsers.add_parser(
         "submatrix", help="Extract submatrices")
     submatrix_parser.set_defaults(func=submatrix)
@@ -70,7 +70,7 @@ def main():
     submatrix_parser.add_argument(
         "--remove_pattern", "-r",
         help="Are explicitly removed. Removing is stronger than keeping")
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     diff_matrix_parser = subparsers.add_parser(
         "diff_matrix", help="Generate differential matrix by dividing the "
         "values of one matrix by the values of the other.")
@@ -85,7 +85,7 @@ def main():
         help="Normalize the matrices by column sum before performing "
         "the division.")
     diff_matrix_parser.add_argument("--output_matrix", "-o", required=True)
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     heatmap_parser = subparsers.add_parser(
         "heatmap", help="Plot interaction matix heatmap")
     heatmap_parser.set_defaults(func=matrix_heatmap)
@@ -110,7 +110,7 @@ def main():
         "--png_dpi", "-e", type=int)
     heatmap_parser.add_argument(
         "--differential", "-d", default=False, action="store_true")
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
     virtual_4C_parser.set_defaults(func=virtual_4C)
@@ -119,7 +119,7 @@ def main():
     virtual_4C_parser.add_argument("--bin_size", "-b", type=int, required=True)
     virtual_4C_parser.add_argument("--track_name", "-t", required=True)
     virtual_4C_parser.add_argument("--output_file", "-o", required=True)
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     dist_dep_decay_parser = subparsers.add_parser(
         "dist_dep_decay", help="Distant dependent decay")
     dist_dep_decay_parser.set_defaults(func=dist_dep_decay)
@@ -132,7 +132,7 @@ def main():
         "--norm_by_col_sum", "-c", default=False, action="store_true",
         help="Normalize the matrices by column sum before performing "
         "the division.")
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     colocalisation_parser = subparsers.add_parser(
          "colo", help="Perform colocalisation analysis")
     colocalisation_parser.set_defaults(func=colocalisation)
@@ -149,7 +149,7 @@ def main():
         "--flanks_only", "-l", default=False, action="store_true")
     colocalisation_parser.add_argument(
         "--remove_zeros", "-z", default=False, action="store_true")
-
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     diff_colocalisation_parser = subparsers.add_parser(
          "colo_diff", help="Perform differential colocalisation analysis")
     diff_colocalisation_parser.set_defaults(func=diff_colocalisation)
@@ -168,8 +168,9 @@ def main():
     diff_colocalisation_parser.add_argument(
         "--flanks_only", "-l", default=False, action="store_true")
     diff_colocalisation_parser.add_argument(
-        "--remove_zeros", "-z", default=False, action="store_true")    
-
+        "--remove_zeros", "-z", default=False, action="store_true")
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     if "func" in dir(args):
         args.func(args)
