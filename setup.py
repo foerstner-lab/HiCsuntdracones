@@ -11,9 +11,8 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [
-    # TODO: put package requirements here
-]
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.read().splitlines()
 
 setup_requirements = [
     'pytest-runner',
@@ -33,12 +32,6 @@ setup(
     author="Konrad Förstner",
     author_email='konrad@foerstner.org',
     url='https://github.com/konrad/hicsuntdracones',
-    install_requires=[
-        "matplotlib >= 1.5.1",
-        "pandas >= 0.18.1",
-        "gffutils",
-        "numpy"
-    ],
     packages=find_packages(include=['hicsuntdracones']),
     include_package_data=True,
     install_requires=requirements,
