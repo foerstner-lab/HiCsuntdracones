@@ -20,7 +20,7 @@ desired (._png_dpi).
 
 ::
 
-     $ hicsd heatmap -h
+     $ heatmap -h
      usage: hicsd heatmap [-h] --matrix MATRIX_FILE [--vmin VMIN] [--vmax VMAX]
                           [--rotate] [--by_chrom] [--output_pdf OUTPUT_PDF]
                           [--output_png_prefix OUTPUT_PNG_PREFIX]
