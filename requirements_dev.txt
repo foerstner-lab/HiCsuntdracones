@@ -10,3 +10,8 @@ cryptography==1.7
 PyYAML==3.11
 pytest==2.9.2
 pytest-runner==2.11.1
+scipy==1.2.0
+seaborn==40.6.3
+sphinx_rtd_theme==0.4.2
+cryptography==2.4.2
+PyYAML = 3.13
