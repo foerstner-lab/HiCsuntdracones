@@ -1,4 +1,3 @@
-
 from collections import defaultdict
 import pandas as pd
 
@@ -17,10 +16,10 @@ def hicpro2homer(input_bed: str, input_matrix: str, output_matrix: str):
     [2] http://homer.salk.edu/homer/index.html
 
     """
-    binning_information = pd.read_table(
-        input_bed, names=["replicon", "start", "end", "bin_id"])
-    pair_value_table = pd.read_table(
-        input_matrix, names=["bin_a", "bin_b", "counting"])
+    binning_information = pd.read_csv(
+        input_bed, names=["replicon", "start", "end", "bin_id"], sep="\t")
+    pair_value_table = pd.read_csv(
+        input_matrix, names=["bin_a", "bin_b", "counting"], sep="\t")
     
     bin_id_to_name = dict([
         (bin_id, "-".join([str(replicon), str(start)]))

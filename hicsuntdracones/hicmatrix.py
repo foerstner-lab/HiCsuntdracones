@@ -1,16 +1,15 @@
-from collections import defaultdict
+from scipy import ndimage
+from matplotlib.backends.backend_pdf import PdfPages
 import sys
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
-from matplotlib.backends.backend_pdf import PdfPages
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scipy import ndimage
+import matplotlib
+matplotlib.use("Agg")
 
 
-class HiCMatrix():
+class HiCMatrix:
 
     def __init__(self, hic_matrix_file=None, hic_matrix_df=None):
         if hic_matrix_file is not None:
@@ -34,7 +33,7 @@ class HiCMatrix():
 
         """
         self._check_file()
-        self.hic_matrix_df = pd.read_table(self._hic_matrix_file)
+        self.hic_matrix_df = pd.read_csv(self._hic_matrix_file, sep="\t")
         self._check_hic_matrix_df()
         self.number_of_bins = self.hic_matrix_df.shape[0]
         self.chromosomes = self._chromosomes()
@@ -145,7 +144,7 @@ class HiCMatrix():
     def matrix_values(self):
         """Return the matrix without the bin name columns.
         """
-        return self.hic_matrix_df.ix[0:, 2:]
+        return self.hic_matrix_df.iloc[0:, 2:]
 
     def heatmap(self, vmin=None, vmax=None, by_chrom=False, rotate=False,
                 output_pdf=None, output_png_prefix=None, png_dpi=600,
@@ -176,8 +175,7 @@ class HiCMatrix():
             chrom_hic_matrix = self.select(keep_pattern=chrom)
             # Make sure that at lest 2 bin are in the submatrix
             if chrom_hic_matrix.hic_matrix_df.shape[0] < 2:
-                print("Skipping {} as the number of bins is too low.".format(
-                    chrom))
+                print(f"Skipping {chrom} as the number of bins is too low.")
                 continue
             self._plot_heatmap(chrom_hic_matrix, title=chrom)
     
@@ -212,8 +210,7 @@ class HiCMatrix():
             if title == "":
                 output_file_name = self._output_png_prefix + ".png"
             else:
-                output_file_name = "{}_{}.png".format(
-                    self._output_png_prefix, title)
+                output_file_name = f"{self._output_png_prefix}_{title}.png"
             heatmap.figure.savefig(output_file_name, dpi=self._png_dpi)
         else:
             raise MissingOutputFile

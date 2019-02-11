@@ -41,7 +41,7 @@ class Virtual4C(object):
                 start=pos_adjusted,
                 end=pos_adjusted+self._bin_size,
                 strand="+",
-                attributes="ID={}".format(genome_bin))])
+                attributes=f"ID={genome_bin}")])
 
     def extract_features_overlapping_bins(self):
         print("- Extracting bins that overlap given features")
@@ -68,8 +68,7 @@ class Virtual4C(object):
         """
         print("- Writing wiggle file")
         output_fh = open(self._output_file, "w")
-        output_fh.write(
-            'track type=wiggle_0 name="{}"\n'.format(self._track_name))
+        output_fh.write(f'track type=wiggle_0 name="{self._track_name}"\n')
         current_chrom = ""
         for hic_bin_feature in self._features.all_features():
             if hic_bin_feature.featuretype != "HiC_bin":
@@ -79,12 +78,10 @@ class Virtual4C(object):
             # with the coverage value
             if hic_bin_feature.seqid != current_chrom:
                 current_chrom = hic_bin_feature.seqid
-                output_fh.write('variableStep chrom={} span={}\n'.format(
-                    current_chrom, self._bin_size))
+                output_fh.write(f'variableStep chrom={current_chrom} span={self._bin_size}\n')
             hic_bin_name = hic_bin_feature.attributes["ID"][0]
             interaction_values = self.hic_matrix.matrix_values()[
                 self._feature_overlapping_bins].loc[hic_bin_name].tolist()
-            output_fh.write("{} {}\n".format(
-                hic_bin_feature.start, np.mean(interaction_values)))
+            output_fh.write(f"{hic_bin_feature.start} {np.mean(interaction_values)}\n")
         output_fh.close()
 

@@ -70,6 +70,14 @@ Subcommand overview
     optional arguments:
       -h, --help            show this help message and exit
       
+
+-----------
+Development
+-----------
+
+This repo contains 2 branches: "master" for development and "production" for stable releases
+
+
 ------
 Trivia
 ------

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import hicsuntdracones.hicmatrix
 
 
-class DistDepDecayOutputGenerator():
+class DistDepDecayOutputGenerator:
 
     def __init__(self, matrix_file, bin_size, output_prefix):
         hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(matrix_file)
@@ -25,8 +25,8 @@ class DistDepDecayOutputGenerator():
                     counting)
 
     def write_table_file(self):
-        with open("{}_distance_dependent_decay.csv".format(
-                self._output_prefix), "w") as output_fh:
+        sep = ", "
+        with open(f"{self._output_prefix}_distance_dependent_decay.csv", "w") as output_fh:
             output_fh.write("Chrom\tDist\tMean counting value\t"
                             "Counting standard deviation\t"
                             "Countings\tNumber of countings\n")
@@ -37,16 +37,12 @@ class DistDepDecayOutputGenerator():
                     counting_mean = np.mean(countings)
                     counting_stand_dev = np.std(countings)
                     output_fh.write(
-                        "{}\t{}\t{}\t{}\t{}\t{}\n".format(
-                            chrom, dist, counting_mean,
-                            counting_stand_dev,
-                            ", ".join([str(count) for count in countings]),
-                            len(countings)))
+                        f"{chrom}\t{dist}\t{counting_mean}\t{counting_stand_dev}\t"
+                        f"{sep.join([str(count) for count in countings])}\t{len(countings)}\n")
 
     def plot_bin_averages(self):
         _pp_av = PdfPages(
-            "{}_distance_dependent_decay_averages.pdf".format(
-                self._output_prefix))
+            f"{self._output_prefix}_distance_dependent_decay_averages.pdf")
         plt.style.use('ggplot')
         for chrom in self._chroms_countings_by_dist.keys():
             fig = plt.figure()
@@ -63,8 +59,7 @@ class DistDepDecayOutputGenerator():
 
     def plot_bin_averages_with_error_bars(self):
         _pp_av = PdfPages(
-            "{}_distance_dependent_decay_averages_with_error_bars.pdf".format(
-                self._output_prefix))
+            f"{self._output_prefix}_distance_dependent_decay_averages_with_error_bars.pdf")
         plt.style.use('ggplot')
         for chrom in self._chroms_countings_by_dist.keys():
             fig = plt.figure()
@@ -87,12 +82,10 @@ class DistDepDecayOutputGenerator():
                 plt.close(fig)
             except ValueError:
                 pass
-            
         _pp_av.close()
                     
     def plot_all_values(self):
-        self._pp = PdfPages("{}_distance_dependent_decay_"
-                            "all_values.pdf".format(self._output_prefix))
+        self._pp = PdfPages(f"{self._output_prefix}_distance_dependent_decay_all_values.pdf")
         plt.style.use('ggplot')
         for chrom in self._chroms_dists_and_countings.keys():
             fig = plt.figure()
