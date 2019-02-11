@@ -5,7 +5,7 @@ import hicsuntdracones.hicmatrix
 
 def test_matrix_generation():
     hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(
-        "tests/fixtures/homer_matrix.txt")
+        "tests/fixtures/homer_matrix.csv")
     assert type(hic_matrix) == hicsuntdracones.hicmatrix.HiCMatrix
     assert hic_matrix.hic_matrix_df.shape == (12, 14)
     assert hic_matrix.number_of_bins == 12
@@ -32,7 +32,7 @@ def test_normalize_by_columns_sum():
 
 def test_bins():
     hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(
-        "tests/fixtures/homer_matrix.txt")
+        "tests/fixtures/homer_matrix.csv")
     assert type(hic_matrix.bins()) == pd.Series
     pd.testing.assert_series_equal(hic_matrix.bins(), pd.Series(
         ["chr1-0", "chr1-10000", "chr1-20000", "chr1-30000", "chr1-40000",
@@ -190,7 +190,7 @@ def test_div_matrix_inplace():
 
 def test__get_counts_for_chroms():
     hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(
-        "tests/fixtures/homer_matrix.txt")
+        "tests/fixtures/homer_matrix.csv")
     chroms_dists_and_countings = hic_matrix.calc_distance_dependent_decay(
         10000)
     expected_chroms_dists_and_countings = {
