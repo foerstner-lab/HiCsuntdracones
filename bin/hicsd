@@ -177,7 +177,7 @@ def main():
     else:
         parser.print_help()
 
-def show_version():
+def show_version(args):
     """
     Version
     """
