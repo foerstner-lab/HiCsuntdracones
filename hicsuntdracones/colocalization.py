@@ -113,7 +113,7 @@ def analyse_colocalization(args):
     colocalization_tester.plot_distribution()
 
 
-# def remove_position_information(name_with_pos_info):
-#     # Return just the chromosome part without the exact window
-#     # location
-#     return "-".join(name_with_pos_info.split("-")[:-1])
+def remove_position_information(name_with_pos_info):
+    # Return just the chromosome part without the exact window
+    # location
+    return "-".join(name_with_pos_info.split("-")[:-1])

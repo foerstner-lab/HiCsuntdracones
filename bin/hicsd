@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+# PYTHON_ARGCOMPLETE_OK
 """HiC sunt dracones - Your little helper for the HiC analysis"""
 import argparse
 import argcomplete
@@ -12,12 +12,14 @@ import hicsuntdracones.virtual4c
 
 __author__ = ("Konrad Förstner <konrad@foerstner.org> "
               "Laura Müller-Hübner "
-              "<Laura.Mueller-Huebner@para.vetmed.uni-muenchen.de>")
+              "<Laura.Mueller-Huebner@para.vetmed.uni-muenchen.de> "
+              "Muhammad Elhossary <elhossary@zbmed.de> ")
 __copyright__ = "2018 by Konrad Förstner <konrad@foerstner.org>"
 __license__ = "ISC license"
 __email__ = "konrad@foerstner.org"
-__version__ = "0.1.1"
+__version__ = "0.1.2b1"
 __maintainer__ = "Konrad Förstner"
+
 
 def main():
     """
@@ -34,35 +36,41 @@ def main():
         "hicpro2homer", help="Convert a matrix in HiC-Pro format to "
         "Homer format")
     hicpro2homer_parser.set_defaults(func=hicpro2homer)
-    hicpro2homer_parser.add_argument("--input_bed", "-b", required=True)
-    hicpro2homer_parser.add_argument("--input_matrix", "-m", required=True)
-    hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True)
+    hicpro2homer_parser.add_argument("--input_bed", "-b", required=True,
+                                     help="")
+    hicpro2homer_parser.add_argument("--input_matrix", "-m", required=True,
+                                     help="Input matrix file.")
+    hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True,
+                                     help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     number_of_bins_parser = subparsers.add_parser(
         "number_of_bins", help="Return the number of bins of the matrix")
     number_of_bins_parser.set_defaults(func=number_of_bins)
-    number_of_bins_parser.add_argument("--input_matrix", "-m", required=True)
+    number_of_bins_parser.add_argument("--input_matrix", "-m", required=True,
+                                       help="Input matrix file.")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     chromosomes_parser = subparsers.add_parser(
         "chromosomes", help="Return the chromosomes used in the matrix")
     chromosomes_parser.set_defaults(func=chromosomes)
-    chromosomes_parser.add_argument("--input_matrix", "-m", required=True)
+    chromosomes_parser.add_argument("--input_matrix", "-m", required=True,
+                                    help="Input matrix file.")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     normalize_by_columns_sum_parser = subparsers.add_parser(
         "norm_by_col_sum",
         help="Normalize by column sum to make matrices comparable")
     normalize_by_columns_sum_parser.set_defaults(func=normalize_by_columns_sum)
-    normalize_by_columns_sum_parser.add_argument(
-        "--input_matrix", "-m", required=True)
-    normalize_by_columns_sum_parser.add_argument(
-        "--output_matrix", "-o", required=True)
+    normalize_by_columns_sum_parser.add_argument("--input_matrix", "-m", required=True,
+                                                 help="Input matrix file.")
+    normalize_by_columns_sum_parser.add_argument("--output_matrix", "-o", required=True,
+                                                 help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     submatrix_parser = subparsers.add_parser(
         "submatrix", help="Extract submatrices")
     submatrix_parser.set_defaults(func=submatrix)
-    submatrix_parser.add_argument(
-        "--input_matrix", "-m", required=True)
-    submatrix_parser.add_argument("--output_matrix", "-o", required=True)
+    submatrix_parser.add_argument("--input_matrix", "-m", required=True,
+                                  help="Input matrix file.")
+    submatrix_parser.add_argument("--output_matrix", "-o", required=True,
+                                  help="")
     submatrix_parser.add_argument(
         "--keep_pattern", "-k",
         help="Bins matching this pattern are explicitly kept."
@@ -70,64 +78,90 @@ def main():
     submatrix_parser.add_argument(
         "--remove_pattern", "-r",
         help="Are explicitly removed. Removing is stronger than keeping")
+    submatrix_parser.add_argument(
+        "--regex", "-x", action="store_true",
+        help="Enables RegEx mode, see python RegEx grammar.")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     diff_matrix_parser = subparsers.add_parser(
         "diff_matrix", help="Generate differential matrix by dividing the "
         "values of one matrix by the values of the other.")
     diff_matrix_parser.set_defaults(func=diff_matrix)
-    diff_matrix_parser.add_argument("--numerator_matrix", "-n", required=True)
-    diff_matrix_parser.add_argument("--denominator_matrix", "-d",
-                                    required=True)
+    diff_matrix_parser.add_argument("--numerator_matrix", "-n", required=True,
+                                    help="")
+    diff_matrix_parser.add_argument("--denominator_matrix", "-d", required=True,
+                                    help="")
     diff_matrix_parser.add_argument("--pseudocount", "-p", default=0.001,
                                     help="Default 0.001")
     diff_matrix_parser.add_argument(
         "--norm_by_col_sum", "-c", default=False, action="store_true",
         help="Normalize the matrices by column sum before performing "
         "the division.")
-    diff_matrix_parser.add_argument("--output_matrix", "-o", required=True)
+    diff_matrix_parser.add_argument("--output_matrix", "-o", required=True,
+                                    help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     heatmap_parser = subparsers.add_parser(
         "heatmap", help="Plot interaction matix heatmap")
     heatmap_parser.set_defaults(func=matrix_heatmap)
     heatmap_parser.add_argument(
-        "--matrix", "-m", dest="matrix_file", required=True)
+        "--matrix", "-m", dest="matrix_file", required=True, help="Input matrix file.")
     heatmap_parser.add_argument(
-        "--vmin", "-i", type=float, default=None)
+        "--vmin", "-mn", type=float, default=None,
+        help="")
     heatmap_parser.add_argument(
-        "--vmax", "-a", type=float, default=None)
+        "--vmax", "-mx", type=float, default=None,
+        help="")
     heatmap_parser.add_argument(
         "--rotate", "-r", default=False, action="store_true",
         help="Rotate 45 degrees. Pyramids FTW!")
     heatmap_parser.add_argument(
-        "--by_chrom", "-c", default=False, action="store_true")
+        "--by_chrom", "-c", default=False, action="store_true", help="")
     heatmap_parser.add_argument(
-        "--output_pdf", "-p", help="Name of the output file. All figures "
-        "will be written into this single file")
+        "--output_prefix", "-o", required=True,
+        help="Name the prefix for all output chosen formats")
     heatmap_parser.add_argument(
-        "--output_png_prefix", "-n", help="Prefix for output png files. "
-        "Each figure file be stored in a separate file.")
+        "--output_pdf", "-p", default=False, action="store_true",
+        help="All figures will be written into this single file")
     heatmap_parser.add_argument(
-        "--png_dpi", "-e", type=int)
+        "--output_png", "-n", default=False, action="store_true",
+        help="Each figure file will be stored in a separate PNG file.")
     heatmap_parser.add_argument(
-        "--differential", "-d", default=False, action="store_true")
+        "--png_dpi", "-e", type=int, help="Specify pixel density for the PNG image.")
+    heatmap_parser.add_argument(
+        "--differential", "-d", default=False, action="store_true", help="")
+    heatmap_parser.add_argument(
+        "--interactive_plot", "-i", default=False, action="store_true",
+        help="Use interactive heatmap plotting, output will be an HTMl file")
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+    histogram_parser = subparsers.add_parser("histogram", help="Plot histogram for matrix reads")
+    histogram_parser.set_defaults(func=matrix_histogram)
+    histogram_parser.add_argument(
+        "--matrix", "-m", dest="matrix_file", required=True, help="Input matrix file.")
+    histogram_parser.add_argument(
+        "--output_prefix", "-o", required=True,
+        help="Name the prefix for the output.")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     virtual_4C_parser = subparsers.add_parser(
         "virtual_4C", help="Perform virtual 4C analysis")
     virtual_4C_parser.set_defaults(func=virtual_4C)
-    virtual_4C_parser.add_argument("--matrix_file", "-m", required=True)
-    virtual_4C_parser.add_argument("--gff_file", "-g", required=True)
-    virtual_4C_parser.add_argument("--bin_size", "-b", type=int, required=True)
-    virtual_4C_parser.add_argument("--track_name", "-t", required=True)
-    virtual_4C_parser.add_argument("--output_file", "-o", required=True)
+    virtual_4C_parser.add_argument("--matrix_file", "-m", required=True,
+                                   help="Input matrix file.")
+    virtual_4C_parser.add_argument("--gff_file", "-g", required=True,
+                                   help="")
+    virtual_4C_parser.add_argument("--bin_size", "-b", type=int, required=True,
+                                   help="")
+    virtual_4C_parser.add_argument("--track_name", "-t", required=True,
+                                   help="")
+    virtual_4C_parser.add_argument("--output_file", "-o", required=True,
+                                   help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     dist_dep_decay_parser = subparsers.add_parser(
         "dist_dep_decay", help="Distant dependent decay")
     dist_dep_decay_parser.set_defaults(func=dist_dep_decay)
+    dist_dep_decay_parser.add_argument("--matrix", "-m", dest="matrix_file", required=True,
+                                       help="Input matrix file.")
     dist_dep_decay_parser.add_argument(
-        "--matrix", "-m", dest="matrix_file", required=True)
-    dist_dep_decay_parser.add_argument(
-        "--bin_size", "-b", required=True, type=int)
-    dist_dep_decay_parser.add_argument("--output_prefix", "-o", required=True)
+        "--bin_size", "-b", required=True, type=int, help="")
+    dist_dep_decay_parser.add_argument("--output_prefix", "-o", required=True, help="")
     dist_dep_decay_parser.add_argument(
         "--norm_by_col_sum", "-c", default=False, action="store_true",
         help="Normalize the matrices by column sum before performing "
@@ -136,39 +170,53 @@ def main():
     colocalisation_parser = subparsers.add_parser(
          "colo", help="Perform colocalisation analysis")
     colocalisation_parser.set_defaults(func=colocalisation)
-    colocalisation_parser.add_argument("--matrix", "-m", dest="matrix_file", required=True)
-    colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True)
-    colocalisation_parser.add_argument("--feature", "-f", required=True)
-    colocalisation_parser.add_argument("--bin_size", "-b", required=True, type=int)
+    colocalisation_parser.add_argument("--matrix", "-m", dest="matrix_file", required=True,
+                                       help="Input matrix file.")
+    colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True,
+                                       help="")
+    colocalisation_parser.add_argument("--feature", "-f", required=True,
+                                       help="")
+    colocalisation_parser.add_argument("--bin_size", "-b", required=True, type=int,
+                                       help="")
     colocalisation_parser.add_argument(
         "--number_of_subsamplings", "-s", default=1, type=int, help="Default 1")
     colocalisation_parser.add_argument("--output_prefix", "-o", required=True)
     colocalisation_parser.add_argument(
         "--margin", "-r", default=0, type=int, help="Default 0")
     colocalisation_parser.add_argument(
-        "--flanks_only", "-l", default=False, action="store_true")
+        "--flanks_only", "-l", default=False, action="store_true",
+        help="")
     colocalisation_parser.add_argument(
-        "--remove_zeros", "-z", default=False, action="store_true")
+        "--remove_zeros", "-z", default=False, action="store_true",
+        help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     diff_colocalisation_parser = subparsers.add_parser(
          "colo_diff", help="Perform differential colocalisation analysis")
     diff_colocalisation_parser.set_defaults(func=diff_colocalisation)
     diff_colocalisation_parser.add_argument(
-        "--matrix_1", "-1", dest="matrix_file_1", required=True)
+        "--matrix_1", "-1", dest="matrix_file_1", required=True,
+        help="First input matrix file.")
     diff_colocalisation_parser.add_argument(
-        "--matrix_2", "-2", dest="matrix_file_2", required=True)    
-    diff_colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True)
-    diff_colocalisation_parser.add_argument("--feature", "-f", required=True)
-    diff_colocalisation_parser.add_argument("--bin_size", "-b", required=True, type=int)
-    diff_colocalisation_parser.add_argument(
-        "--number_of_subsamplings", "-s", default=1, type=int, help="Default 1")
-    diff_colocalisation_parser.add_argument("--output_prefix", "-o", required=True)
+        "--matrix_2", "-2", dest="matrix_file_2", required=True,
+        help="Second input matrix file.")
+    diff_colocalisation_parser.add_argument("--gff", "-g", dest="gff_file", required=True,
+                                            help="")
+    diff_colocalisation_parser.add_argument("--feature", "-f", required=True,
+                                            help="")
+    diff_colocalisation_parser.add_argument("--bin_size", "-b", required=True, type=int,
+                                            help="")
+    diff_colocalisation_parser.add_argument("--number_of_subsamplings", "-s",
+                                             default=1, type=int, help="Default 1")
+    diff_colocalisation_parser.add_argument("--output_prefix", "-o", required=True,
+                                            help="")
     diff_colocalisation_parser.add_argument(
         "--margin", "-r", default=0, type=int, help="Default 0")
     diff_colocalisation_parser.add_argument(
-        "--flanks_only", "-l", default=False, action="store_true")
+        "--flanks_only", "-l", default=False, action="store_true",
+        help="")
     diff_colocalisation_parser.add_argument(
-        "--remove_zeros", "-z", default=False, action="store_true")
+        "--remove_zeros", "-z", default=False, action="store_true",
+        help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
@@ -177,11 +225,13 @@ def main():
     else:
         parser.print_help()
 
+
 def show_version(args):
     """
     Version
     """
     print(__version__)
+
 
 def number_of_bins(args):
     """
@@ -190,10 +240,12 @@ def number_of_bins(args):
     hic_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(args.input_matrix)
     print(hic_matrix.number_of_bins)
 
+
 def chromosomes(args):
     hic_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(args.input_matrix)
     print("\n".join(hic_matrix.chromosomes))
-    
+
+
 def hicpro2homer(args):
     """
     Convert a matrix in HiC-Pro format to "Homer format.
@@ -201,10 +253,12 @@ def hicpro2homer(args):
     hicsuntdracones.hicpro2homer.hicpro2homer(
         args.input_bed, args.input_matrix, args.output_matrix)
 
+
 def normalize_by_columns_sum(args):
     hic_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(args.input_matrix)
     hic_matrix.normalize_by_columns_sum()
     hic_matrix.save(args.output_matrix)
+
 
 def submatrix(args):
     """
@@ -214,8 +268,10 @@ def submatrix(args):
     hic_matrix.select(
         keep_pattern=args.keep_pattern,
         remove_pattern=args.remove_pattern,
+        regex_mode=args.regex,
         inplace=True)
     hic_matrix.save(args.output_matrix)
+
 
 def matrix_heatmap(args):
     """
@@ -224,9 +280,17 @@ def matrix_heatmap(args):
     hic_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(args.matrix_file)
     hic_matrix.heatmap(
         vmin=args.vmin, vmax=args.vmax, by_chrom=args.by_chrom,
-        rotate=args.rotate, output_pdf=args.output_pdf,
-        output_png_prefix=args.output_png_prefix, png_dpi=args.png_dpi,
-        differential=args.differential)
+        rotate=args.rotate,  output_prefix=args.output_prefix,
+        output_pdf=args.output_pdf,
+        output_png=args.output_png, png_dpi=args.png_dpi,
+        differential=args.differential, interactive_plot=args.interactive_plot)
+
+def matrix_histogram(args):
+    """
+        Plot matrix histogram
+    """
+    hic_matrix = hicsuntdracones.hicmatrix.read_hic_matrix(args.matrix_file)
+    hic_matrix.histogram(output_prefix=args.output_prefix)
 
 def diff_matrix(args):
     """
@@ -243,6 +307,7 @@ def diff_matrix(args):
     hic_matrix_numerator.div_by(hic_matrix_denominator_matrix, inplace=True)
     hic_matrix_numerator.save(args.output_matrix)
 
+
 def virtual_4C(args):
     """
     Perform virtual 4C analysis
@@ -255,11 +320,14 @@ def virtual_4C(args):
     virtual_4c.extract_features_overlapping_bins()
     virtual_4c.generate_wiggle_file()
 
+
 def colocalisation(args):
     hicsuntdracones.colocalization.analyse_colocalization(args)
 
+
 def diff_colocalisation(args):
     hicsuntdracones.diffcolocalization.analyse_diff_colocalization(args)
+
 
 def dist_dep_decay(args):
     dist_dep_decay_output_generator = (
@@ -269,5 +337,6 @@ def dist_dep_decay(args):
     dist_dep_decay_output_generator.plot_bin_averages()
     dist_dep_decay_output_generator.plot_bin_averages_with_error_bars()
     dist_dep_decay_output_generator.plot_all_values()
+
 
 main()

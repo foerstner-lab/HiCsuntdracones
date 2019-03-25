@@ -4,3 +4,7 @@ gffutils
 numpy
 scipy
 seaborn
+argcomplete
+bokeh
+holoviews
+argcomplete
