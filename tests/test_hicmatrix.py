@@ -103,12 +103,13 @@ def test_select_keep_vs_remove():
 def test_matrix_values():
     hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(
         "tests/fixtures/homer_matrix_small.txt")
-    pd.testing.assert_frame_equal(
-        pd.DataFrame.from_dict(
-            {"chr1-0": [10.0, 3.0, 0.0, 7.0],
+    data = {"chr1-0": [10.0, 3.0, 0.0, 7.0],
              "chr1-10000": [3.0, 13.0, 0.0, 4.0],
              "chr2-0": [0.0, 0.0, 0.0, 0.0],
-             "chr2-10000": [7.0, 4.0, 0.0, 9.0]}),
+             "chr2-10000": [7.0, 4.0, 0.0, 9.0]}
+    pd.testing.assert_frame_equal(
+        pd.DataFrame.from_dict(data, orient='index',
+                               columns=["chr1-0", "chr1-10000", "chr2-0", "chr2-10000"]),
         hic_matrix.matrix_values())
 
 
@@ -118,16 +119,20 @@ def test__div_matrix():
     hic_matrix_2 = hicsuntdracones.hicmatrix.HiCMatrix(
         "tests/fixtures/homer_matrix_small.txt")
     div_matrix = hic_matrix_1._div_by(hic_matrix_2, 0)
-    pd.testing.assert_frame_equal(
-        pd.DataFrame.from_dict(
-            {"HiCMatrix": [
+    print(hic_matrix_1.matrix_values())
+    print(hic_matrix_2.matrix_values())
+    print(div_matrix)
+    data = {"HiCMatrix": [
                 "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "Regions": [
                  "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "chr1-0": [1.0, 1.0, np.nan, 1.0],
              "chr1-10000": [1.0, 1.0, np.nan, 1.0],
              "chr2-0": [np.nan, np.nan, np.nan, np.nan],
-             "chr2-10000": [1.0, 1.0, np.nan, 1.0]}),
+             "chr2-10000": [1.0, 1.0, np.nan, 1.0]}
+    pd.testing.assert_frame_equal(
+        pd.DataFrame.from_dict(data, orient='index',
+                               columns=["chr1-0", "chr1-10000", "chr2-0", "chr2-10000"]),
         div_matrix)
 
 
@@ -137,16 +142,17 @@ def test__div_matrix_2():
     hic_matrix_2 = hicsuntdracones.hicmatrix.HiCMatrix(
         "tests/fixtures/homer_matrix_small.txt")
     div_matrix = hic_matrix_1._div_by(hic_matrix_2, 1)
-    pd.testing.assert_frame_equal(
-        pd.DataFrame.from_dict(
-            {"HiCMatrix": [
+    data = {"HiCMatrix": [
                 "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "Regions": [
                  "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "chr1-0": [1.0, 1.0, 1.0, 1.0],
              "chr1-10000": [1.0, 1.0, 1.0, 1.0],
              "chr2-0": [1.0, 1.0, 1.0, 1.0],
-             "chr2-10000": [1.0, 1.0, 1.0, 1.0]}),
+             "chr2-10000": [1.0, 1.0, 1.0, 1.0]}
+    pd.testing.assert_frame_equal(
+        pd.DataFrame.from_dict(data, orient='index',
+                               columns=["chr1-0", "chr1-10000", "chr2-0", "chr2-10000"]),
         div_matrix)
 
 
@@ -156,16 +162,17 @@ def test_div_matrix():
     hic_matrix_2 = hicsuntdracones.hicmatrix.HiCMatrix(
         "tests/fixtures/homer_matrix_small.txt")
     diff_hic_matrix = hic_matrix_1.div_by(hic_matrix_2, pseudocount=1.0)
-    pd.testing.assert_frame_equal(
-        pd.DataFrame.from_dict(
-            {"HiCMatrix": [
+    data = {"HiCMatrix": [
                 "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "Regions": [
                  "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "chr1-0": [1.0, 1.0, 1.0, 1.0],
              "chr1-10000": [1.0, 1.0, 1.0, 1.0],
              "chr2-0": [1.0, 1.0, 1.0, 1.0],
-             "chr2-10000": [1.0, 1.0, 1.0, 1.0]}),
+             "chr2-10000": [1.0, 1.0, 1.0, 1.0]}
+    pd.testing.assert_frame_equal(
+        pd.DataFrame.from_dict(data, orient='index',
+                               columns=["chr1-0", "chr1-10000", "chr2-0", "chr2-10000"]),
         diff_hic_matrix.hic_matrix_df)
 
 
@@ -175,16 +182,17 @@ def test_div_matrix_inplace():
     hic_matrix_2 = hicsuntdracones.hicmatrix.HiCMatrix(
         "tests/fixtures/homer_matrix_small.txt")
     hic_matrix_1.div_by(hic_matrix_2, pseudocount=1.0, inplace=True)
-    pd.testing.assert_frame_equal(
-        pd.DataFrame.from_dict(
-            {"HiCMatrix": [
+    data = {"HiCMatrix": [
                 "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "Regions": [
                  "chr1-0", "chr1-10000", "chr2-0", "chr2-10000"],
              "chr1-0": [1.0, 1.0, 1.0, 1.0],
              "chr1-10000": [1.0, 1.0, 1.0, 1.0],
              "chr2-0": [1.0, 1.0, 1.0, 1.0],
-             "chr2-10000": [1.0, 1.0, 1.0, 1.0]}),
+             "chr2-10000": [1.0, 1.0, 1.0, 1.0]}
+    pd.testing.assert_frame_equal(
+        pd.DataFrame.from_dict(data, orient='index',
+                               columns=["chr1-0", "chr1-10000", "chr2-0", "chr2-10000"]),
         hic_matrix_1.hic_matrix_df)
 
 

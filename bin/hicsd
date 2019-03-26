@@ -9,6 +9,7 @@ import hicsuntdracones.colocalization
 import hicsuntdracones.diffcolocalization
 import hicsuntdracones.distdepdecay
 import hicsuntdracones.virtual4c
+import hicsuntdracones.ploidy
 
 __author__ = ("Konrad Förstner <konrad@foerstner.org> "
               "Laura Müller-Hübner "
@@ -218,6 +219,21 @@ def main():
         "--remove_zeros", "-z", default=False, action="store_true",
         help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+    ploidy_parser = subparsers.add_parser("ploidy", help="Apply ploidy factors")
+    ploidy_parser.set_defaults(func="ploidy")
+    ploidy_parser.add_argument("--input_hic_pro_matrix_values", "-iv", required=True,
+                               help="")
+    ploidy_parser.add_argument("--input_hic_pro_matrix_coordinates", "-ic", required=True,
+                               help="")
+    ploidy_parser.add_argument("--ploidy_file", "-p", required=True,
+                               help="")
+    ploidy_parser.add_argument("--output_matrix_values", "-ov", required=True,
+                               help="")
+    ploidy_parser.add_argument("--output_matrix_coordinates", "-oc", required=True,
+                               help="")
+    ploidy_parser.add_argument("--bin_size", "-b", required=True, type=int,
+                               help="")
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
     if "func" in dir(args):
@@ -338,5 +354,15 @@ def dist_dep_decay(args):
     dist_dep_decay_output_generator.plot_bin_averages_with_error_bars()
     dist_dep_decay_output_generator.plot_all_values()
 
+
+def ploidy(args):
+    ploidy_obj = hicsuntdracones.ploidy.Ploidy(
+        hic_pro_matrix_values=args.input_hic_pro_matrix_values,
+        hic_pro_matrix_coordinates=args.input_hic_pro_matrix_coordinates,
+        ploidy_file=args.ploidy_file,
+        output_matrix_values=args.output_matrix_values,
+        output_matrix_coordinates=args.output_matrix_coordinates,
+        bin_size=args.bin_size)
+    ploidy_obj.main()
 
 main()
