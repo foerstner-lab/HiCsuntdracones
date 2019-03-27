@@ -144,17 +144,14 @@ class HiCMatrix:
         column sums are the same.
         """
         numerator_matrix_values = self.matrix_values() + pseudocount
-        denominator_matrix_values = (
-            denominator_matrix.matrix_values() + pseudocount)
+        denominator_matrix_values = denominator_matrix.matrix_values() + pseudocount
         diff_matrix = numerator_matrix_values / denominator_matrix_values
-
         return pd.concat([self.hic_matrix_df[[
             "HiCMatrix", "Regions"]], diff_matrix],
                          axis=1, join_axes=[self.hic_matrix_df.index])
 
     def heatmap(self, vmin=None, vmax=None, output_prefix=None,
-                by_chrom=False, rotate=False,
-                output_pdf=False, output_png=False, png_dpi=600,
+                by_chrom=False, rotate=False, output_pdf=False,output_png=False, png_dpi=600,
                 differential=False, interactive_plot=False):
         self._vmin = vmin
         self._vmax = vmax
@@ -175,6 +172,13 @@ class HiCMatrix:
             self._pp.close()
 
     def matrix_values(self):
+        """Return the matrix without the bin name columns.
+        """
+        return self.hic_matrix_df.iloc[0:, 2:]
+
+    def alt_matrix_values(self):
+        """Alternative function that return similar to matrix_values
+        but with regions set as index for use in plotting with labels"""
         tmp_df = self.hic_matrix_df.iloc[0:, 1:]
         tmp_df.set_index(['Regions'], inplace=True)
         tmp_df.index.name = None
@@ -187,7 +191,7 @@ class HiCMatrix:
 
     def _plot_heatmap_split_by_chrom(self):
         chroms = sorted(set(["-".join(genome_bin.split("-")[:-1])
-            for genome_bin in self.matrix_values().columns]))
+            for genome_bin in self.alt_matrix_values().columns]))
         for chrom in chroms:
             chrom_hic_matrix = self.select(keep_pattern=chrom)
             # Make sure that at lest 2 bin are in the submatrix
@@ -199,13 +203,13 @@ class HiCMatrix:
             self._write_iHMs_to_file()
 
     def _plot_heatmap(self, hic_matrix, title=""):
-        matrix_values = hic_matrix.matrix_values()
+        matrix_values = hic_matrix.alt_matrix_values()
         if self._rotate:
             matrix_values = ndimage.rotate(matrix_values.to_numpy(), 45.0)
             matrix_values = matrix_values[:int(matrix_values.shape[0] / 2), :]
             # matrix_values = pd.DataFrame(data=matrix_values)
         if self._vmin is None:
-            self._vmin = min(self.matrix_values().min())
+            self._vmin = min(self.alt_matrix_values().min())
         cmap = sns.cubehelix_palette(n_colors=500)
         if self._differential:
             cmap = sns.color_palette("RdBu_r", 500)
@@ -317,7 +321,7 @@ class HiCMatrix:
         self._chroms_dists_and_countings[chrom] = {}
         self._chroms_dists_and_countings[chrom]["dists"] = np.array([])
         self._chroms_dists_and_countings[chrom]["countings"] = np.array([])
-        for col_bin in submatrix.matrix_values():
+        for col_bin in submatrix.alt_matrix_values():
             col_counter += 1
             row_counter = 0
             for counting, row_bin in zip(
@@ -339,12 +343,13 @@ class HiCMatrix:
                         counting)
 
     def histogram(self, output_prefix=None):
-        matrix = self.matrix_values()
+        matrix = self.alt_matrix_values()
         reads_list = []
         for i in self._flatten_matrix_to_tuple_list(matrix, distinct=True):
             reads_list.append(i[2])
         fig = sns.distplot(reads_list, axlabel="reads", hist=True, kde=False)
         fig.figure.savefig(f"{output_prefix}.png", dpi=1200)
+
 
 def remove_position_information(name_with_pos_info: str):
     # Return just the chromosome part without the exact window
