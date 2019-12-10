@@ -20,7 +20,7 @@ __author__ = ("Konrad Förstner <konrad@foerstner.org> "
 __copyright__ = "2018 by Konrad Förstner <konrad@foerstner.org>"
 __license__ = "ISC license"
 __email__ = "konrad@foerstner.org"
-__version__ = "0.2.0"
+__version__ = "0.1.2b1"
 __maintainer__ = "Konrad Förstner"
 
 
