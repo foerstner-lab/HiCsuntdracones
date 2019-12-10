@@ -4,6 +4,7 @@
 import argparse
 import argcomplete
 import hicsuntdracones.hicpro2homer
+import hicsuntdracones.mHiC2homer
 import hicsuntdracones.hicmatrix
 import hicsuntdracones.colocalization
 import hicsuntdracones.diffcolocalization
@@ -14,7 +15,8 @@ import hicsuntdracones.ploidy
 __author__ = ("Konrad Förstner <konrad@foerstner.org> "
               "Laura Müller-Hübner "
               "<Laura.Mueller-Huebner@para.vetmed.uni-muenchen.de> "
-              "Muhammad Elhossary <elhossary@zbmed.de> ")
+              "Muhammad Elhossary <elhossary@zbmed.de> "
+              "Benedikt G Brink <b.brink@lmu.de>")
 __copyright__ = "2018 by Konrad Förstner <konrad@foerstner.org>"
 __license__ = "ISC license"
 __email__ = "konrad@foerstner.org"
@@ -42,6 +44,15 @@ def main():
     hicpro2homer_parser.add_argument("--input_matrix", "-m", required=True,
                                      help="Input matrix file.")
     hicpro2homer_parser.add_argument("--output_matrix", "-o", required=True,
+                                     help="")
+    # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+    mHiC2homer_parser = subparsers.add_parser(
+        "mHiC2homer", help="Convert a matrix in mHiC format to "
+        "Homer format")
+    mHiC2homer_parser.set_defaults(func=mHiC2homer)
+    mHiC2homer_parser.add_argument("--input_matrix", "-m", required=True,
+                                     help="Input matrix of interactions (mHiC output file).")
+    mHiC2homer_parser.add_argument("--output_matrix", "-o", required=True,
                                      help="")
     # _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
     number_of_bins_parser = subparsers.add_parser(
@@ -268,6 +279,13 @@ def hicpro2homer(args):
     """
     hicsuntdracones.hicpro2homer.hicpro2homer(
         args.input_bed, args.input_matrix, args.output_matrix)
+
+def mHiC2homer(args):
+    """
+    Convert a matrix in mHiC format to Homer format.
+    """
+    hicsuntdracones.mHiC2homer.mHiC2homer(
+        args.input_matrix, args.output_matrix)
 
 
 def normalize_by_columns_sum(args):
