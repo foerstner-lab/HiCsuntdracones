@@ -17,6 +17,10 @@ HiC sunt dracones - Your little helper for HiC analyses
      :target: https://pyup.io/repos/github/foerstner-lab/hicsuntdracones/
      :alt: Updates
 
+.. image:: https://zenodo.org/badge/95952483.svg
+     :target: https://zenodo.org/badge/latestdoi/95952483
+     :alt: Zenodo
+	   
 .. image:: https://upload.wikimedia.org/wikipedia/commons/2/27/1601_De_Bry_and_de_Veer_Map_of_Nova_Zembla_and_the_Northeast_Passage_-_Geographicus_-_NovaZembla-debry-1601.jpg
    :height: 75px
 
