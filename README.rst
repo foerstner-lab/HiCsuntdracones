@@ -6,15 +6,15 @@ HiC sunt dracones - Your little helper for HiC analyses
 .. image:: https://img.shields.io/pypi/v/hicsuntdracones.svg
         :target: https://pypi.python.org/pypi/hicsuntdracones
 
-.. image:: https://img.shields.io/travis/konrad/hicsuntdracones.svg
-        :target: https://travis-ci.org/konrad/hicsuntdracones
+.. image:: https://img.shields.io/travis/foerstner-lab/hicsuntdracones.svg
+        :target: https://travis-ci.org/foerstner-lab/hicsuntdracones
 
 .. image:: https://readthedocs.org/projects/hicsuntdracones/badge/?version=latest
         :target: https://hicsuntdracones.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/konrad/hicsuntdracones/shield.svg
-     :target: https://pyup.io/repos/github/konrad/hicsuntdracones/
+.. image:: https://pyup.io/repos/github/foerstner-lab/hicsuntdracones/shield.svg
+     :target: https://pyup.io/repos/github/foerstner-lab/hicsuntdracones/
      :alt: Updates
 
 .. image:: https://upload.wikimedia.org/wikipedia/commons/2/27/1601_De_Bry_and_de_Veer_Map_of_Nova_Zembla_and_the_Northeast_Passage_-_Geographicus_-_NovaZembla-debry-1601.jpg
