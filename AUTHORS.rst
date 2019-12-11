@@ -5,10 +5,12 @@ Credits
 Development Lead
 ----------------
 
+* Muhammad Elhossary <elhossary@zbmed.de>
 * Konrad Förstner <konrad@foerstner.org>
-* Laura Müller <Laura.Mueller-Huebner@para.vetmed.uni-muenchen.de>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Laura Müller <Laura.Mueller-Huebner@para.vetmed.uni-muenchen.de>
+* Benedikt G Brink <b.brink@lmu.de>
+
