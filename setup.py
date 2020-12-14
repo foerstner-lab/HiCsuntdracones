@@ -26,7 +26,7 @@ test_requirements = [
 
 setup(
     name='hicsuntdracones',
-    version='0.1.0',
+    version='0.2.0',
     description="A HiC matrix tool",
     long_description=readme + '\n\n' + history,
     author="Konrad Förstner",
@@ -54,4 +54,5 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     setup_requires=setup_requirements,
+    scripts=['bin/hicsd']
 )
