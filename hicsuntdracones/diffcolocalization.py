@@ -28,15 +28,16 @@ class DiffColocalizationTester(ColocalizationBase):
         self._interaction_ratios_2_clean = None
 
     def generate_both_interaction_matrices(self):
+        import copy
         """Read the HiC matrix file and add each bin as further feature in the
                 annotation.
                 """
         print("- Reading first HiC matrix file")
         self._interaction_matrix_1 = self.add_matrix_bins_as_features\
-            (self._matrix_file, self._features)
+            (self._matrix_file, copy.copy(self._features))
         print("- Reading second HiC matrix file")
         self._interaction_matrix_2 = self.add_matrix_bins_as_features\
-            (self._other_matrix_file, self._features)
+            (self._other_matrix_file, copy.copy(self._features))
 
     def extract_random_bins(self):
         """

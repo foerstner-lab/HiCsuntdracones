@@ -40,7 +40,7 @@ class HiCMatrix:
         self.number_of_bins = self.hic_matrix_df.shape[0]
         self.chromosomes = self._chromosomes()
 
-        
+
     def _check_file(self):
         # TODO
         # check if file contains "HiCMatrix" and "Regions"
@@ -60,7 +60,7 @@ class HiCMatrix:
             sys.stderr.write("Missing column 'Regions'."
                              "Is this really a HiC matrix in Homer format?")
             sys.exit(1)
-    
+
     def save(self, output_hic_matrix_file):
         self.hic_matrix_df.to_csv(output_hic_matrix_file, sep="\t",
                                   index=False)
@@ -148,7 +148,7 @@ class HiCMatrix:
         diff_matrix = numerator_matrix_values / denominator_matrix_values
         return pd.concat([self.hic_matrix_df[[
             "HiCMatrix", "Regions"]], diff_matrix],
-                         axis=1, join_axes=[self.hic_matrix_df.index])
+                         axis=1, ignore_index=True)
 
     def heatmap(self, vmin=None, vmax=None, output_prefix=None,
                 by_chrom=False, rotate=False, output_pdf=False,output_png=False, png_dpi=600,
