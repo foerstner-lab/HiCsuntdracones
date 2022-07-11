@@ -33,13 +33,7 @@ class ColocalizationBase:
         interaction_matrix = hic_matrix.hic_matrix_df
         interaction_matrix.set_index(
             interaction_matrix["Regions"], inplace=True)
-        #------------------------------------------------
-        print((interaction_matrix["Regions"]))
-        print(interaction_matrix["Regions"][interaction_matrix["Regions"].duplicated()])
-        genome_bin_list = interaction_matrix["Regions"].tolist()
-        print([item for item, count in collections.Counter(genome_bin_list).items() if count > 1])
-        print(set([x for x in genome_bin_list if genome_bin_list.count(x) > 1]))
-        #------------------------------------------------
+
         for genome_bin in interaction_matrix["Regions"]:
             chrom_part = "-".join(genome_bin.split("-")[:-1])
             # As the bin counting starts with 0 but the gff starts at 1

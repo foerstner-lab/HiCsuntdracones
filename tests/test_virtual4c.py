@@ -24,7 +24,7 @@ def test_read_gff_file():
     # get_hash
 
     md5_read_gff_file_v4c_target = _get_hash("tests/fixtures/myout_target_virtual_4c.txt")
-    md5_read_gff_file_v4c_generated = _get_hash("./myout_virtual_4c.txt")
+    md5_read_gff_file_v4c_generated = _get_hash("./myout___")
 
     # add to dictionary
 
