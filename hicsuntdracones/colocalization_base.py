@@ -5,7 +5,9 @@ import matplotlib
 matplotlib.use("Agg")
 import hicsuntdracones.hicmatrix
 import collections
-
+#test
+#from pybedtools import BedTool
+#-----
 class ColocalizationBase:
 
     def __init__(self, matrix_file, gff_file, feature, bin_size,
@@ -22,11 +24,38 @@ class ColocalizationBase:
         self._remove_zeros = remove_zeros
         self._features = None
         self._feature_overlapping_bins = []
-
+        '''
+        #for later use
+        self._bed_file = bed_file
+        '''
     def read_gff_file(self):
         print("- Reading GFF file")
         self._features = gffutils.create_db(self._gff_file, ":memory:")
 
+    '''
+#test
+    def read_bed_file(self):
+        print("- Reading BED file")
+        self._features = pybedtools.example_bedtool(self._bed_file_file, ":memory:")
+
+        x = pybedtools.example_bedtool('a.bed')
+for interval in x:
+    # do something with interval
+
+#two options on adding bed files
+
+    def my_func(f):
+    """
+    adds 10 bp to the stop
+    """
+    f.stop += 1
+    return f
+
+pybedtools.example_bedtool('a.bed')\
+    .each(my_func)\
+    .saveas('out.bed')
+#-----
+        '''
     def add_matrix_bins_as_features(self, matrix_file, features):
         hic_matrix = hicsuntdracones.hicmatrix.HiCMatrix(matrix_file)
         hic_matrix.normalize_by_columns_sum()
